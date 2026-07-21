@@ -4,28 +4,35 @@
    Checkout is wired to hand off to Shopify (see checkout()).
    ============================================================ */
 
-const ADULT = ["S", "M", "L", "XL", "XXL"];
-const KIDS = ["4-6Y", "6-8Y", "8-10Y", "10-12Y"];
+const ADULT = ["S", "M", "L", "XL", "2XL"];
+const GIRLS = ["30", "32", "34", "36"];   // 7-8Y · 9-10Y · 11-12Y · 13-14Y
+const SHOPIFY_CHECKOUT = "https://5w3pdc-k7.myshopify.com";
 
 const PRODUCTS = [
-  { h:"spider-hoodie", t:"Spider Hoodie", price:1799, cat:"Hoodie", colors:["Red","Black"], sizes:ADULT,
+  { h:"spider-hoodie", t:"Spider Hoodie", price:1499, cat:"Hoodie", colors:["Red","Black"], sizes:ADULT,
     gallery:{ Red:["products/sh_red_01.jpg", "products/sh_red_02.jpg", "products/sh_red_03.jpg", "products/sh_red_04.jpg", "products/sh_red_05.jpg", "products/sh_red_06.jpg", "products/sh_red_07.jpg", "products/sh_red_08.jpg", "products/sh_red_09.jpg", "products/sh_red_10.jpg"],
               Black:["products/sh_blk_01.jpg", "products/sh_blk_02.jpg", "products/sh_blk_03.jpg", "products/sh_blk_04.jpg", "products/sh_blk_05.jpg", "products/sh_blk_06.jpg", "products/sh_blk_07.jpg", "products/sh_blk_08.jpg", "products/sh_blk_09.jpg", "products/sh_blk_10.jpg"] },
     d:"The white spider, front and back, on a heavyweight pullover hoodie. Red runs loud, black runs venom. Shot on the streets of Mumbai.",
-    fab:"Heavyweight brushed-fleece cotton · front + back print", tag:"THE DROP" },
+    variants:{ Red:{S:"48795234697316",M:"48795234730084",L:"48795234762852",XL:"48795234795620","2XL":"48795234828388"},
+               Black:{S:"48795249573988",M:"48795249606756",L:"48795249639524",XL:"48795249672292","2XL":"48795249705060"} },
+    fab:"320 GSM heavyweight non-zipper hoodie · front + back print", tag:"THE DROP" },
   { h:"spider-oversized-tee", t:"Oversized Spider Tee", price:999, cat:"Oversized", colors:["Black","White"], sizes:ADULT,
     gallery:{ Black:["products/ot_blk_01.jpg", "products/ot_blk_02.jpg", "products/ot_blk_03.jpg", "products/ot_blk_04.jpg", "products/ot_blk_05.jpg"],
               White:["products/ot_wht_01.jpg", "products/ot_wht_02.jpg", "products/ot_wht_03.jpg", "products/ot_wht_04.jpg", "products/ot_wht_05.jpg"] },
     d:"Oversized drop-shoulder tee with the spider big on the chest and bigger on the back. Black with white spider, white with black — pick your side.",
-    fab:"180 GSM cotton · oversized drop-shoulder fit · front + back print" },
-  { h:"spider-girl-tee", t:"Spider Girl Tee", price:599, cat:"Kids", colors:["Black","White"], sizes:KIDS,
+    variants:{ Black:{S:"48795275886692",M:"48795275853924",L:"48795275821156",XL:"48795275788388","2XL":"48795275755620"},
+               White:{S:"48795272314980",M:"48795272347748",L:"48795272380516",XL:"48795272413284","2XL":"48795272446052"} },
+    fab:"Heavyweight oversized unisex tee · front + back print" },
+  { h:"spider-girl-tee", t:"Spider Girl Tee", price:999, cat:"Girls", colors:["Black","White"], sizes:GIRLS,
     gallery:{ Black:["products/kt_blk_01.jpg", "products/kt_blk_02.jpg", "products/kt_blk_03.jpg", "products/kt_blk_04.jpg", "products/kt_blk_05.jpg", "products/kt_blk_06.jpg", "products/kt_blk_07.jpg", "products/kt_blk_08.jpg", "products/kt_blk_09.jpg"],
               White:["products/kt_wht_01.jpg", "products/kt_wht_02.jpg", "products/kt_wht_03.jpg", "products/kt_wht_04.jpg", "products/kt_wht_05.jpg", "products/kt_wht_06.jpg", "products/kt_wht_07.jpg", "products/kt_wht_08.jpg", "products/kt_wht_09.jpg"] },
     d:"The spider tee, fitted and sized down. Front and back print for the youngest baddies in the gully.",
-    fab:"180 GSM bio-washed cotton · kids fit · front + back print" },
+    variants:{ Black:{"30":"48795301118052","32":"48795301150820","34":"48795301183588","36":"48795301216356"},
+               White:{"30":"48795323826276","32":"48795323859044","34":"48795323891812","36":"48795323924580"} },
+    fab:"Fitted girls tee · front + back print · sizes 30–36 (7–14 yrs)" },
 ];
 
-const CATS = ["All", "Hoodie", "Oversized", "Kids"];
+const CATS = ["All", "Hoodie", "Oversized", "Girls"];
 const inr = n => "₹" + n.toLocaleString("en-IN");
 const byH = h => PRODUCTS.find(p => p.h === h);
 /* resolve an image ref to a real src: gallery paths live under assets/, legacy design cards under assets/designs/ */
@@ -173,7 +180,8 @@ function addToCart(h, color, size){
   const key = `${h}|${color}|${size}`;
   const ex = cart.find(i => i.key === key);
   if (ex) ex.qty++;
-  else cart.push({ key, h, t:p.t, price:p.price, src:srcOf(imgsFor(p, color)[0]), color, size, qty:1 });
+  else cart.push({ key, h, t:p.t, price:p.price, src:srcOf(imgsFor(p, color)[0]), color, size, qty:1,
+                   vid: (p.variants && p.variants[color] && p.variants[color][size]) || null });
   saveCart(); openCart(); toast(`Added — ${p.t}`);
 }
 function setQty(key, delta){
@@ -209,10 +217,10 @@ function openCart(){ document.getElementById("drawer").classList.add("is-open");
 function closeCart(){ document.getElementById("drawer").classList.remove("is-open"); document.getElementById("scrim").classList.remove("is-on"); }
 
 function checkout(){
-  // Ready for Shopify: each item maps to its variant. When the Shopify store is live,
-  // build a cart permalink: https://<shop>.myshopify.com/cart/<variantId>:<qty>,...
-  // For now (no store connected yet) show a clear handoff message.
-  alert("Checkout is ready to connect to Shopify.\n\nOnce the Shopify store + Storefront token are added, this bag hands off to Shopify's secure checkout (Razorpay / COD / GST).\n\nBag total: " + inr(cartTotal()) + " · " + cartCount() + " item(s).");
+  const parts = cart.filter(i => i.vid).map(i => `${i.vid}:${i.qty}`);
+  if (!parts.length) { alert("Something's off with this bag — please re-add your items."); return; }
+  // Shopify cart permalink -> secure Shopify checkout (Razorpay / COD / GST)
+  window.location.href = `${SHOPIFY_CHECKOUT}/cart/${parts.join(",")}`;
 }
 
 /* ---------- toast ---------- */
