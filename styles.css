@@ -138,7 +138,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .qv__close{position:absolute;top:12px;right:14px;z-index:2;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid var(--line)}
 .qv__media{background:#000;border-right:1px solid var(--line);display:flex;flex-direction:column}
 .qv__media #qvMain{width:100%;flex:1;min-height:0;object-fit:cover}
-.qv__thumbs{display:flex;gap:8px;padding:10px;background:#000}
+.qv__thumbs{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:#000;max-height:170px;overflow-y:auto}
 .qv__thumbs img{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line);cursor:pointer;opacity:.55;transition:.2s}
 .qv__thumbs img:hover{opacity:1}
 .qv__thumbs img.is-on{opacity:1;border-color:var(--taxi)}
