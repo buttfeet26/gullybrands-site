@@ -68,17 +68,32 @@ function renderFilters() {
     `<button class="chip ${c===activeCat?"is-active":""}" data-cat="${c}">${c}</button>`).join("");
 }
 
-/* ---------- quick view ---------- */
-let qvState = null;
-function qvGallery(p, color) {
-  const imgs = imgsFor(p, color);
+/* ---------- quick view (auto-scrolling gallery) ---------- */
+let qvState = null, qvTimer = null;
+/* every image of the product, all colourways combined */
+const allImgsOf = p => p.gallery ? p.colors.flatMap(c => p.gallery[c]) : [p.img];
+function qvGallery(p) {
+  const imgs = qvState.imgs;
   const thumbs = imgs.length > 1 ? `<div class="qv__thumbs">` + imgs.map((im,i) =>
     `<img src="${srcOf(im)}" class="${i===0?"is-on":""}" data-i="${i}" alt="">`).join("") + `</div>` : "";
   return `<img id="qvMain" src="${srcOf(imgs[0])}" alt="${p.t}">${thumbs}`;
 }
+function qvShow(idx) {
+  const main = document.getElementById("qvMain");
+  if (!main || !qvState) return;
+  qvState.idx = idx;
+  main.style.opacity = 0;
+  setTimeout(() => { main.src = srcOf(qvState.imgs[idx]); main.style.opacity = 1; }, 180);
+  const thumbs = document.querySelectorAll(".qv__thumbs img");
+  thumbs.forEach((el,i) => el.classList.toggle("is-on", i === idx));
+  if (thumbs[idx]) thumbs[idx].scrollIntoView({block:"nearest", behavior:"smooth"});
+}
+function qvNext(){ if (qvState) qvShow((qvState.idx + 1) % qvState.imgs.length); }
+function qvAuto(){ qvStop(); qvTimer = setInterval(qvNext, 2400); }
+function qvStop(){ if (qvTimer) { clearInterval(qvTimer); qvTimer = null; } }
 function openQuick(h) {
   const p = byH(h);
-  qvState = { h, color: p.colors[0], size: null };
+  qvState = { h, color: p.colors[0], size: null, imgs: allImgsOf(p), idx: 0 };
   const colorBtns = p.colors.map((c,i) =>
     `<button class="opt ${i===0?"is-on":""}" data-type="color" data-val="${c}">${c}</button>`).join("");
   const sizeBtns = p.sizes.map(s =>
@@ -86,7 +101,7 @@ function openQuick(h) {
   document.getElementById("qv").innerHTML = `
     <div class="qv__panel" role="dialog" aria-modal="true" aria-label="${p.t}">
       <button class="qv__close" aria-label="Close">✕</button>
-      <div class="qv__media">${qvGallery(p, qvState.color)}</div>
+      <div class="qv__media">${qvGallery(p)}</div>
       <div class="qv__info">
         ${p.tag?`<span class="qv__tag">${p.tag}</span>`:""}
         <h2 class="qv__title">${p.t}</h2>
@@ -105,8 +120,11 @@ function openQuick(h) {
     </div>`;
   document.getElementById("qv").classList.add("is-open");
   document.body.classList.add("noscroll");
+  qvAuto();
+  const media = document.querySelector(".qv__media");
+  if (media) { media.addEventListener("mouseenter", qvStop); media.addEventListener("mouseleave", qvAuto); }
 }
-function closeQuick(){ document.getElementById("qv").classList.remove("is-open"); document.body.classList.remove("noscroll"); }
+function closeQuick(){ qvStop(); document.getElementById("qv").classList.remove("is-open"); document.body.classList.remove("noscroll"); }
 
 /* ---------- cart ---------- */
 function saveCart(){ localStorage.setItem("gb_cart", JSON.stringify(cart)); updateCartUI(); }
@@ -190,17 +208,19 @@ document.addEventListener("click", (e) => {
     qvState[opt.dataset.type] = opt.dataset.val;
     if (opt.dataset.type === "size") document.getElementById("sizehint").textContent = "— " + opt.dataset.val;
     if (opt.dataset.type === "color") {
-      // swap the gallery to the chosen colourway
+      // jump the slideshow to this colourway's first shot
       const p = byH(qvState.h);
-      document.querySelector(".qv__media").innerHTML = qvGallery(p, qvState.color);
+      if (p.gallery && p.gallery[qvState.color]) {
+        qvShow(qvState.imgs.indexOf(p.gallery[qvState.color][0]));
+        qvAuto();
+      }
     }
     return;
   }
   const thumb = e.target.closest(".qv__thumbs img");
   if (thumb) {
-    document.getElementById("qvMain").src = thumb.src;
-    thumb.parentElement.querySelectorAll("img").forEach(t=>t.classList.remove("is-on"));
-    thumb.classList.add("is-on");
+    qvShow(+thumb.dataset.i);
+    qvAuto();
     return;
   }
   if (qbtn) { setQty(qbtn.dataset.key, +qbtn.dataset.q); return; }
