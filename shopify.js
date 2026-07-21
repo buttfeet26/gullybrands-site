@@ -9,8 +9,8 @@
 
 const SHOPIFY = {
   domain: "5w3pdc-k7.myshopify.com",
-  token: "REPLACE_WITH_STOREFRONT_TOKEN",   // <-- paste token here
-  version: "2026-01",
+  token: "f0ddd5f9408c94607acd278d72b203c0",  // public Storefront token (read-only, browser-safe)
+  version: "2026-07",
 };
 
 /* Display grouping: several Shopify products shown as ONE card with
