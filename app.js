@@ -235,6 +235,21 @@ document.addEventListener("click", (e) => {
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape") { closeQuick(); closeCart(); }});
 
+/* ---------- grid auto-cycle: every card keeps rotating through ALL its shots ---------- */
+let gridTick = 0;
+setInterval(() => {
+  gridTick++;
+  document.querySelectorAll(".card").forEach(card => {
+    const p = byH(card.dataset.h);
+    if (!p) return;
+    const imgs = allImgsOf(p);
+    if (imgs.length < 2) return;
+    const img = card.querySelector(".card__media img");
+    img.style.opacity = 0;
+    setTimeout(() => { img.src = srcOf(imgs[gridTick % imgs.length]); img.style.opacity = 1; }, 220);
+  });
+}, 2600);
+
 /* ---------- init ---------- */
 renderFilters();
 renderGrid();
