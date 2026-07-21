@@ -173,7 +173,7 @@ function openQuick(h) {
           <div class="opts" data-group="size">${sizeBtns}</div>
         </div>
         <button class="btn btn--full" id="qvAdd">Add to bag — ${inr(p.price)}</button>
-        <p class="qv__ship">Free prepaid shipping · COD available · Dispatch in 24–48 hrs</p>
+        <p class="qv__ship">Free shipping across India · Secure online payment · Dispatch in 24–48 hrs</p>
       </div>
     </div>`;
   document.getElementById("qv").classList.add("is-open");
@@ -230,7 +230,7 @@ function closeCart(){ document.getElementById("drawer").classList.remove("is-ope
 function checkout(){
   const parts = cart.filter(i => i.vid).map(i => `${i.vid}:${i.qty}`);
   if (!parts.length) { alert("Something's off with this bag — please re-add your items."); return; }
-  // Shopify cart permalink -> secure Shopify checkout (Razorpay / COD / GST)
+  // Shopify cart permalink -> secure Shopify checkout (Razorpay: UPI/cards/netbanking/wallets, GST)
   window.location.href = `${SHOPIFY_CHECKOUT}/cart/${parts.join(",")}`;
 }
 
