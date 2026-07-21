@@ -79,9 +79,10 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
 .card{cursor:pointer;outline:none}
 .card__media{position:relative;aspect-ratio:1;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#000;transition:border-color .25s,transform .25s}
-.card__media img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease,opacity .22s ease}
+.card__media .ly{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease,transform .5s ease}
+.card__media .ly.is-show{opacity:1}
 .card:hover .card__media,.card:focus-visible .card__media{border-color:var(--taxi);transform:translateY(-4px)}
-.card:hover .card__media img{transform:scale(1.04)}
+.card:hover .card__media .ly{transform:scale(1.04)}
 .card__tag{position:absolute;top:12px;left:12px;background:var(--taxi);color:#000;font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.6rem;padding:.28rem .55rem;border-radius:6px}
 .card__quick{position:absolute;left:12px;right:12px;bottom:12px;background:var(--cream);color:#000;font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;padding:.7rem;border-radius:10px;opacity:0;transform:translateY(8px);transition:.25s}
 .card:hover .card__quick,.card:focus-within .card__quick{opacity:1;transform:none}
@@ -138,7 +139,9 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .qv__panel{position:relative;width:min(920px,100%);max-height:90vh;overflow:auto;background:var(--ink2);border:1px solid var(--line);border-radius:18px;display:grid;grid-template-columns:1fr 1fr}
 .qv__close{position:absolute;top:12px;right:14px;z-index:2;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid var(--line)}
 .qv__media{background:#000;border-right:1px solid var(--line);display:flex;flex-direction:column}
-.qv__media #qvMain{width:100%;flex:1;min-height:0;object-fit:cover;transition:opacity .2s ease}
+.qv__stage{position:relative;flex:1;min-height:320px}
+.qv__stage .ly{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
+.qv__stage .ly.is-show{opacity:1}
 .qv__thumbs{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:#000;max-height:170px;overflow-y:auto}
 .qv__thumbs img{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line);cursor:pointer;opacity:.55;transition:.2s}
 .qv__thumbs img:hover{opacity:1}

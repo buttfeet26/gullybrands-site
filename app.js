@@ -43,7 +43,8 @@ function productCard(p) {
   return `
     <article class="card reveal" data-h="${p.h}" tabindex="0" aria-label="${p.t}">
       <div class="card__media">
-        <img src="${coverOf(p)}" alt="${p.t}" loading="lazy">
+        <img class="ly is-show" src="${coverOf(p)}" alt="${p.t}" loading="lazy">
+        <img class="ly" alt="" aria-hidden="true">
         ${p.tag ? `<span class="card__tag">${p.tag}</span>` : ""}
         <button class="card__quick" data-h="${p.h}">Quick add +</button>
       </div>
@@ -57,10 +58,51 @@ function productCard(p) {
     </article>`;
 }
 
+/* preloaded crossfade between the two .ly layers — never shows black */
+function crossfade(mediaEl, url) {
+  if (!mediaEl) return;
+  const ls = mediaEl.querySelectorAll("img.ly");
+  if (ls.length < 2) return;
+  const showing = ls[0].classList.contains("is-show") ? ls[0] : ls[1];
+  const hidden = showing === ls[0] ? ls[1] : ls[0];
+  const pre = new Image();
+  pre.onload = () => {
+    hidden.src = url;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      hidden.classList.add("is-show");
+      showing.classList.remove("is-show");
+    }));
+  };
+  pre.src = url;
+}
+
 function renderGrid() {
   const list = activeCat === "All" ? PRODUCTS : PRODUCTS.filter(p => p.cat === activeCat);
   document.getElementById("grid").innerHTML = list.map(productCard).join("");
   observeReveals();
+  initCardCycles();
+}
+
+/* each card cycles through ALL its shots on its own staggered clock */
+let cardTimers = [];
+function initCardCycles() {
+  cardTimers.forEach(t => { clearTimeout(t); clearInterval(t); });
+  cardTimers = [];
+  document.querySelectorAll(".card").forEach((card, ci) => {
+    const p = byH(card.dataset.h);
+    if (!p) return;
+    const imgs = allImgsOf(p);
+    if (imgs.length < 2) return;
+    let idx = 0;
+    const kick = setTimeout(() => {
+      const iv = setInterval(() => {
+        idx = (idx + 1) % imgs.length;
+        crossfade(card.querySelector(".card__media"), srcOf(imgs[idx]));
+      }, 3200);
+      cardTimers.push(iv);
+    }, 900 + ci * 1100);
+    cardTimers.push(kick);
+  });
 }
 
 function renderFilters() {
@@ -76,14 +118,12 @@ function qvGallery(p) {
   const imgs = qvState.imgs;
   const thumbs = imgs.length > 1 ? `<div class="qv__thumbs">` + imgs.map((im,i) =>
     `<img src="${srcOf(im)}" class="${i===0?"is-on":""}" data-i="${i}" alt="">`).join("") + `</div>` : "";
-  return `<img id="qvMain" src="${srcOf(imgs[0])}" alt="${p.t}">${thumbs}`;
+  return `<div class="qv__stage"><img class="ly is-show" src="${srcOf(imgs[0])}" alt="${p.t}"><img class="ly" alt="" aria-hidden="true"></div>${thumbs}`;
 }
 function qvShow(idx) {
-  const main = document.getElementById("qvMain");
-  if (!main || !qvState) return;
+  if (!qvState) return;
   qvState.idx = idx;
-  main.style.opacity = 0;
-  setTimeout(() => { main.src = srcOf(qvState.imgs[idx]); main.style.opacity = 1; }, 180);
+  crossfade(document.querySelector(".qv__stage"), srcOf(qvState.imgs[idx]));
   const thumbs = document.querySelectorAll(".qv__thumbs img");
   thumbs.forEach((el,i) => el.classList.toggle("is-on", i === idx));
   if (thumbs[idx]) thumbs[idx].scrollIntoView({block:"nearest", behavior:"smooth"});
@@ -234,21 +274,6 @@ document.addEventListener("click", (e) => {
   if (e.target.id === "checkoutBtn") checkout();
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape") { closeQuick(); closeCart(); }});
-
-/* ---------- grid auto-cycle: every card keeps rotating through ALL its shots ---------- */
-let gridTick = 0;
-setInterval(() => {
-  gridTick++;
-  document.querySelectorAll(".card").forEach(card => {
-    const p = byH(card.dataset.h);
-    if (!p) return;
-    const imgs = allImgsOf(p);
-    if (imgs.length < 2) return;
-    const img = card.querySelector(".card__media img");
-    img.style.opacity = 0;
-    setTimeout(() => { img.src = srcOf(imgs[gridTick % imgs.length]); img.style.opacity = 1; }, 220);
-  });
-}, 2600);
 
 /* ---------- init ---------- */
 renderFilters();
