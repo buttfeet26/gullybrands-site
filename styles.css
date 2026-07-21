@@ -158,6 +158,8 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .opt{min-width:44px;padding:.55rem .8rem;border:1px solid var(--line);border-radius:9px;font-size:.85rem;font-weight:600;transition:.15s}
 .opt:hover{border-color:var(--cream-dim)}
 .opt.is-on{background:var(--cream);color:#000;border-color:var(--cream)}
+.opt.is-off{opacity:.32;text-decoration:line-through;cursor:not-allowed}
+.opt.is-off:hover{border-color:var(--line)}
 .qv__ship{text-align:center;color:var(--cream-dim);font-size:.72rem;margin-top:.8rem}
 
 /* ===== Cart drawer ===== */

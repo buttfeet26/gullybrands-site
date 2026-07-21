@@ -8,7 +8,7 @@ const ADULT = ["S", "M", "L", "XL", "2XL"];
 const GIRLS = ["30", "32", "34", "36"];   // 7-8Y · 9-10Y · 11-12Y · 13-14Y
 const SHOPIFY_CHECKOUT = "https://5w3pdc-k7.myshopify.com";
 
-const PRODUCTS = [
+const FALLBACK = [
   { h:"spider-hoodie", t:"Spider Hoodie", price:1499, cat:"Hoodie", colors:["Red","Black"], sizes:ADULT,
     gallery:{ Red:["products/sh_red_01.jpg", "products/sh_red_02.jpg", "products/sh_red_03.jpg", "products/sh_red_04.jpg", "products/sh_red_05.jpg", "products/sh_red_06.jpg", "products/sh_red_07.jpg", "products/sh_red_08.jpg", "products/sh_red_09.jpg", "products/sh_red_10.jpg"],
               Black:["products/sh_blk_01.jpg", "products/sh_blk_02.jpg", "products/sh_blk_03.jpg", "products/sh_blk_04.jpg", "products/sh_blk_05.jpg", "products/sh_blk_06.jpg", "products/sh_blk_07.jpg", "products/sh_blk_08.jpg", "products/sh_blk_09.jpg", "products/sh_blk_10.jpg"] },
@@ -32,11 +32,19 @@ const PRODUCTS = [
     fab:"Fitted girls tee · front + back print · sizes 30–36 (7–14 yrs)" },
 ];
 
-const CATS = ["All", "Hoodie", "Oversized", "Girls"];
+let PRODUCTS = FALLBACK;          // replaced by live Shopify data on load
+let CATS = ["All", "Hoodie", "Oversized", "Girls"];
 const inr = n => "₹" + n.toLocaleString("en-IN");
 const byH = h => PRODUCTS.find(p => p.h === h);
 /* resolve an image ref to a real src: gallery paths live under assets/, legacy design cards under assets/designs/ */
-const srcOf = ref => ref.includes("/") ? "assets/" + ref : "assets/designs/" + ref;
+const srcOf = ref => (ref.startsWith("http") || ref.startsWith("assets/")) ? ref
+                     : ref.includes("/") ? "assets/" + ref : "assets/designs/" + ref;
+/* variant lookup works for both the live shape {id,available} and the snapshot shape "id" */
+function variantOf(p, color, size) {
+  const v = p.variants && p.variants[color] && p.variants[color][size];
+  if (!v) return null;
+  return typeof v === "string" ? { id: v, available: true } : v;
+}
 /* images for a product+color: gallery if present, else the single design card */
 const imgsFor = (p, color) => p.gallery ? (p.gallery[color] || p.gallery[p.colors[0]]) : [p.img];
 const coverOf = p => srcOf(imgsFor(p, p.colors[0])[0]);
@@ -143,8 +151,11 @@ function openQuick(h) {
   qvState = { h, color: p.colors[0], size: null, imgs: allImgsOf(p), idx: 0 };
   const colorBtns = p.colors.map((c,i) =>
     `<button class="opt ${i===0?"is-on":""}" data-type="color" data-val="${c}">${c}</button>`).join("");
-  const sizeBtns = p.sizes.map(s =>
-    `<button class="opt" data-type="size" data-val="${s}">${s}</button>`).join("");
+  const sizeBtns = p.sizes.map(s => {
+    const v = variantOf(p, qvState.color, s);
+    const off = !v || !v.available;
+    return `<button class="opt${off ? " is-off" : ""}" data-type="size" data-val="${s}"${off ? " disabled" : ""}>${s}</button>`;
+  }).join("");
   document.getElementById("qv").innerHTML = `
     <div class="qv__panel" role="dialog" aria-modal="true" aria-label="${p.t}">
       <button class="qv__close" aria-label="Close">✕</button>
@@ -181,7 +192,7 @@ function addToCart(h, color, size){
   const ex = cart.find(i => i.key === key);
   if (ex) ex.qty++;
   else cart.push({ key, h, t:p.t, price:p.price, src:srcOf(imgsFor(p, color)[0]), color, size, qty:1,
-                   vid: (p.variants && p.variants[color] && p.variants[color][size]) || null });
+                   vid: (variantOf(p, color, size) || {}).id || null });
   saveCart(); openCart(); toast(`Added — ${p.t}`);
 }
 function setQty(key, delta){
@@ -262,6 +273,17 @@ document.addEventListener("click", (e) => {
         qvShow(qvState.imgs.indexOf(p.gallery[qvState.color][0]));
         qvAuto();
       }
+      const sizeWrap = document.querySelector('.opts[data-group="size"]');
+      if (sizeWrap) {
+        sizeWrap.innerHTML = p.sizes.map(sz => {
+          const v = variantOf(p, qvState.color, sz);
+          const off = !v || !v.available;
+          return `<button class="opt${off ? " is-off" : ""}" data-type="size" data-val="${sz}"${off ? " disabled" : ""}>${sz}</button>`;
+        }).join("");
+        qvState.size = null;
+        const hint = document.getElementById("sizehint");
+        if (hint) { hint.textContent = "— pick one"; hint.style.color = ""; }
+      }
     }
     return;
   }
@@ -283,9 +305,18 @@ document.addEventListener("click", (e) => {
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape") { closeQuick(); closeCart(); }});
 
-/* ---------- init ---------- */
-renderFilters();
-renderGrid();
-updateCartUI();
-observeReveals();
+/* ---------- init: live Shopify data, snapshot as fallback ---------- */
+async function boot() {
+  const { products, live } = await loadProducts(FALLBACK);
+  PRODUCTS = products;
+  const cats = [...new Set(PRODUCTS.map(p => p.cat))];
+  CATS = ["All", ...cats];
+  if (!CATS.includes(activeCat)) activeCat = "All";
+  renderFilters();
+  renderGrid();
+  updateCartUI();
+  observeReveals();
+  console.log(live ? "[gully] live Shopify sync ✓" : "[gully] snapshot mode");
+}
+boot();
 document.getElementById("year").textContent = new Date().getFullYear();
