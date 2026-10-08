@@ -21,7 +21,7 @@ ctx.__run().then(list => {
     return {
       "@type": "ListItem", position: i + 1,
       item: {
-        "@type": "Product", name: p.t, url: SITE + "#" + p.h,
+        "@type": "Product", name: p.t, url: SITE + "p/" + p.h + "/",
         image: p.colors.map(c => p.gallery[c][0]),
         description: plain(p.d).split(" Fabric:")[0],
         brand: { "@type": "Brand", name: "Gully Brands" },
@@ -29,7 +29,7 @@ ctx.__run().then(list => {
         color: p.colors.join(", "), size: p.sizes.join(", "),
         audience: { "@type": "PeopleAudience", suggestedGender: "female" },
         offers: {
-          "@type": "Offer", url: SITE + "#" + p.h, priceCurrency: "INR", price: String(p.price),
+          "@type": "Offer", url: SITE + "p/" + p.h + "/", priceCurrency: "INR", price: String(p.price),
           availability: anyAvailable ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
           itemCondition: "https://schema.org/NewCondition",
           shippingDetails: { "@type": "OfferShippingDetails",
@@ -54,4 +54,9 @@ ctx.__run().then(list => {
     `<!--ld:products--><script type="application/ld+json">${JSON.stringify(ld)}</script><!--/ld:products-->`);
   fs.writeFileSync("index.html", html);
   console.log("products", list.length, "snapshot bytes", body.length);
+  require("./make-pages.js");   // product pages, Google feed, sitemap (reads the snapshot just written)
+  // homepage footer: crawlable links to every product page
+  const links = list.map(p => `<li><a href="p/${p.h}/">${p.t}</a></li>`).join("");
+  fs.writeFileSync("index.html", fs.readFileSync("index.html", "utf8").replace(
+    /<!--plinks-->[\s\S]*?<!--\/plinks-->/, `<!--plinks--><ul>${links}</ul><!--/plinks-->`));
 });

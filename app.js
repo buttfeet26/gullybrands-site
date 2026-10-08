@@ -313,6 +313,7 @@ async function boot() {
   renderGrid();
   updateCartUI();
   observeReveals();
+  if (new URLSearchParams(location.search).has("bag")) openCart();   // product pages send shoppers here after "Add to bag"
   console.log(live ? "[gully] live Shopify sync ✓" : "[gully] snapshot mode");
   // product links (e.g. from Google / Instagram): shop.gullybrands.in/#crop-top-11 opens that product
   const linked = byH(decodeURIComponent(location.hash.slice(1)));
