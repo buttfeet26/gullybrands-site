@@ -65,10 +65,10 @@ does that in the app. Post one at a time (bulk calls time out).
 
 ## Meta ads
 Ad account "Gully Brands" 1012183625146645 (INR), FB Page "Gully Brands" 1199817166551074.
-Meta pixel/dataset 1064261386377988 on index.html + help.html; app.js fires ViewContent (quick view),
+Meta pixel "Gully Brands · Mumbai's pixel" 2541478776319465 (created by Shopify's Facebook & Instagram app, so Purchase lands on it too) on index.html + help.html. Do NOT use 1064261386377988 ("Gully Brands app") — that one belongs to app.gullybrands.in; app.js fires ViewContent (quick view),
 AddToCart, InitiateCheckout (300 ms delay before the Shopify redirect). Headless test browsers are
 bot-filtered by fbevents: test with --disable-blink-features=AutomationControlled + a mobile UA.
-Purchase fires only on Shopify checkout → needs Shopify's Facebook & Instagram app on the same dataset.
+Purchase fires on Shopify checkout via the Shopify app (installed Oct 2026).
 Ad copy follows the brand rules above (no slang, never mention AI).
 
 ## Open to-dos for the owner
