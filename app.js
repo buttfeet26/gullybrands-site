@@ -149,7 +149,7 @@ function openQuick(h) {
           <div class="opts" data-group="size">${sizeBtns}</div>
         </div>
         <button class="btn btn--full" id="qvAdd">Add to bag — ${inr(p.price)}</button>
-        <p class="qv__ship">Free shipping across India · Secure online payment · Dispatch in 24–48 hrs</p>
+        <p class="qv__ship">Free shipping across India · Secure online payment · Dispatch in 2–3 days</p>
       </div>
     </div>`;
   document.getElementById("qv").classList.add("is-open");
