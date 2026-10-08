@@ -33,7 +33,7 @@ function productCard(p) {
   return `
     <article class="card reveal" data-h="${p.h}" tabindex="0" aria-label="${p.t}">
       <div class="card__media">
-        <img class="ly is-show" src="${coverOf(p)}" alt="${p.t}" loading="lazy">
+        <img class="ly is-show" src="${coverOf(p)}" alt="${p.t} — Y2K graphic crop top" loading="lazy">
         <img class="ly" alt="" aria-hidden="true">
         ${p.tag ? `<span class="card__tag">${p.tag}</span>` : ""}
         <button class="card__quick" data-h="${p.h}">Quick add +</button>
@@ -292,6 +292,9 @@ async function boot() {
   updateCartUI();
   observeReveals();
   console.log(live ? "[gully] live Shopify sync ✓" : "[gully] snapshot mode");
+  // product links (e.g. from Google / Instagram): shop.gullybrands.in/#crop-top-11 opens that product
+  const linked = byH(decodeURIComponent(location.hash.slice(1)));
+  if (linked) { document.getElementById("drop").scrollIntoView(); openQuick(linked.h); }
 }
 boot();
 document.getElementById("year").textContent = new Date().getFullYear();
