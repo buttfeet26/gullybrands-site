@@ -63,6 +63,14 @@ Caption format: evocative hook line + emoji, one-sentence description, "₹499 �
 (#itgirl #baddiestyle #lanadelreyaesthetic #coquette …). The API can't edit or delete posts; the owner
 does that in the app. Post one at a time (bulk calls time out).
 
+## Meta ads
+Ad account "Gully Brands" 1012183625146645 (INR), FB Page "Gully Brands" 1199817166551074.
+Meta pixel/dataset 1064261386377988 on index.html + help.html; app.js fires ViewContent (quick view),
+AddToCart, InitiateCheckout (300 ms delay before the Shopify redirect). Headless test browsers are
+bot-filtered by fbevents: test with --disable-blink-features=AutomationControlled + a mobile UA.
+Purchase fires only on Shopify checkout → needs Shopify's Facebook & Instagram app on the same dataset.
+Ad copy follows the brand rules above (no slang, never mention AI).
+
 ## Open to-dos for the owner
 - Submit `https://shop.gullybrands.in/sitemap.xml` in Google Search Console.
 - 48 unused old hoodie/tee photos still sit in `assets/products/` (deletion not yet approved).
