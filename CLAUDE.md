@@ -19,6 +19,8 @@ Clothing Headless" channel) via the Storefront API in `shopify.js`.
 the colours the print looks good on (black-on-black etc. were deleted).
 - **Never** tell the owner to re-sync/push products from the Qikink dashboard — it re-adds
   all 60 variants. Trim variants in Shopify only; kept variant IDs/SKUs must not change.
+- New products need Shopify category **Apparel & Accessories > Clothing > Clothing Tops > T-Shirts**
+  (`aa-1-13-8`) and metafield `mm-google-shopping.custom_product = true`, or Google & YouTube won't sync them.
 - New products must be **published** to the Headless + Online Store channels or the site
   can't see them (and cart permalinks fail).
 - Tags drive the site's "shop by vibe" chips (`VIBES` in `shopify.js`): `y2k`, `coquette`/`bow`,
