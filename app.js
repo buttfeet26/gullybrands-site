@@ -138,6 +138,7 @@ function qvStop(){ if (qvTimer) { clearInterval(qvTimer); qvTimer = null; } }
 function openQuick(h) {
   const p = byH(h);
   qvState = { h, color: p.colors[0], size: null, imgs: allImgsOf(p), idx: 0 };
+  track("ViewContent", { content_ids: [h], content_name: p.t, content_type: "product", value: p.price, currency: "INR" });
   const colorBtns = p.colors.map((c,i) =>
     `<button class="opt ${i===0?"is-on":""}" data-type="color" data-val="${c}">${c}</button>`).join("");
   const sizeBtns = p.sizes.map(s => {
@@ -175,8 +176,11 @@ function closeQuick(){ if (location.hash && byH(decodeURIComponent(location.hash
 
 /* ---------- cart ---------- */
 function saveCart(){ localStorage.setItem("gb_cart", JSON.stringify(cart)); updateCartUI(); }
+/* Meta pixel events (no-op if the pixel is blocked) */
+const track = (ev, data) => { try { window.fbq && fbq("track", ev, data); } catch (e) {} };
 function addToCart(h, color, size){
   const p = byH(h);
+  track("AddToCart", { content_ids: [h], content_name: p.t, content_type: "product", value: p.price, currency: "INR" });
   const key = `${h}|${color}|${size}`;
   const ex = cart.find(i => i.key === key);
   if (ex) ex.qty++;
@@ -219,8 +223,11 @@ function closeCart(){ document.getElementById("drawer").classList.remove("is-ope
 function checkout(){
   const parts = cart.filter(i => i.vid).map(i => `${i.vid}:${i.qty}`);
   if (!parts.length) { alert("Something's off with this bag — please re-add your items."); return; }
+  track("InitiateCheckout", { content_ids: cart.map(i => i.h), num_items: cart.reduce((n, i) => n + i.qty, 0),
+                              value: cartTotal(), currency: "INR" });
   // Shopify cart permalink -> secure Shopify checkout (Razorpay: UPI/cards/netbanking/wallets, GST)
-  window.location.href = `${SHOPIFY_CHECKOUT}/cart/${parts.join(",")}`;
+  const go = () => { window.location.href = `${SHOPIFY_CHECKOUT}/cart/${parts.join(",")}`; };
+  window.fbq ? setTimeout(go, 300) : go();   // give the pixel a moment to send
 }
 
 /* ---------- toast ---------- */
