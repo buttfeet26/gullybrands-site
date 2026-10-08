@@ -31,7 +31,7 @@ const SF_QUERY = `query GullyProducts {
     nodes {
       id handle title availableForSale productType description descriptionHtml tags
       featuredImage { url }
-      images(first: 30) { nodes { url } }
+      images(first: 50) { nodes { url altText } }
       variants(first: 100) {
         nodes {
           id title availableForSale
@@ -143,6 +143,18 @@ function buildProducts(nodes) {
       }
       const amt = parseFloat(v.price.amount);
       if (price === null || amt < price) price = amt;
+    }
+    /* Photos labelled in Shopify (alt text) win over the Qikink filename pairing:
+         "Mia wearing the <title> in <Colour>"                  model shot (first)
+         "Mia wearing the <title> in <Colour> — <scene>"        lifestyle shot
+         "<title> in <Colour> — product photo, front|back"      plain product photo (last) */
+    for (const c of colors) {
+      const esc = c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const mine = n.images.nodes.filter(i => new RegExp(` in ${esc}( —|$)`).test(i.altText || ""));
+      if (!mine.length) continue;
+      const rank = alt => /^Mia/.test(alt) ? (alt.includes("—") ? 1 : 0) : /front/.test(alt) ? 2 : 3;
+      mine.sort((x, y) => rank(x.altText) - rank(y.altText));
+      gallery[c] = [...mine.map(i => i.url), ...sizeChart];
     }
     for (const c of colors) if (!gallery[c]) gallery[c] = allImgs;
     sizes.sort((a, b) => SIZE_ORDER.indexOf(a) - SIZE_ORDER.indexOf(b));
