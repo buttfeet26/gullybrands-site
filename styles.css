@@ -97,6 +97,11 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .sw--cream{background:var(--cream)}
 .sw--red{background:#B3202C}
 .sw--white{background:#fff}
+.sw--navy-blue{background:#1F2A44}
+.sw--grey-melange{background:#B9B9B9}
+.sw--light-baby-pink{background:#F6C9CF}
+.sw--beige{background:#F1E3B8}
+.sw--lavender{background:#CFCBF2}
 
 /* ===== Why ===== */
 .why{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}

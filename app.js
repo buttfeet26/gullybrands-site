@@ -54,7 +54,7 @@ let activeCat = "All";
 /* ---------- product grid ---------- */
 function productCard(p) {
   const swatches = p.colors.map(c =>
-    `<span class="sw sw--${c.toLowerCase()}" title="${c}"></span>`).join("");
+    `<span class="sw sw--${c.toLowerCase().replace(/\s+/g, "-")}" title="${c}"></span>`).join("");
   return `
     <article class="card reveal" data-h="${p.h}" tabindex="0" aria-label="${p.t}">
       <div class="card__media">
@@ -128,7 +128,7 @@ function renderFilters() {
 /* ---------- quick view (auto-scrolling gallery) ---------- */
 let qvState = null, qvTimer = null;
 /* every image of the product, all colourways combined */
-const allImgsOf = p => p.gallery ? p.colors.flatMap(c => p.gallery[c]) : [p.img];
+const allImgsOf = p => p.gallery ? [...new Set(p.colors.flatMap(c => p.gallery[c]))] : [p.img];
 function qvGallery(p) {
   const imgs = qvState.imgs;
   const thumbs = imgs.length > 1 ? `<div class="qv__thumbs">` + imgs.map((im,i) =>

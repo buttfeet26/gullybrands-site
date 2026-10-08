@@ -60,18 +60,23 @@ const GROUPS = [
 const SF_QUERY = `query GullyProducts {
   products(first: 50) {
     nodes {
-      id handle title availableForSale productType
+      id handle title availableForSale productType description
       featuredImage { url }
-      images(first: 12) { nodes { url } }
-      variants(first: 60) {
+      images(first: 30) { nodes { url } }
+      variants(first: 100) {
         nodes {
           id title availableForSale
+          selectedOptions { name value }
+          image { url }
           price { amount currencyCode }
         }
       }
     }
   }
 }`;
+
+/* sizes we know sort smallest -> largest; unknown sizes keep Shopify's order */
+const SIZE_ORDER = ["XS", "S", "M", "L", "XL", "XXL", "2XL", "3XL", "30", "32", "34", "36"];
 
 /* numeric id out of gid://shopify/ProductVariant/123 */
 const numId = gid => String(gid).split("/").pop();
@@ -129,22 +134,36 @@ function buildProducts(nodes) {
                price: Math.round(price), colors, sizes: sizesSet, gallery, variants });
   }
 
-  /* any Shopify product we haven't grouped -> its own card, automatically */
+  /* any Shopify product we haven't grouped -> its own card, automatically.
+     Variants are split on their Colour / Size options so each colour gets a
+     swatch and its own photos (front mockup, matching back mockup, size chart). */
   for (const n of nodes) {
     if (used.has(n.handle) || !n.availableForSale) continue;
-    const sizes = [], variants = { Default: {} };
+    const colors = [], sizes = [], variants = {}, gallery = {};
+    const allImgs = n.images.nodes.map(i => i.url);
+    const sizeChart = allImgs.filter(u => /sizechart/i.test(u));
     let price = null;
     for (const v of n.variants.nodes) {
-      variants.Default[v.title] = { id: numId(v.id), available: v.availableForSale };
-      sizes.push(v.title);
+      const opt = name => (v.selectedOptions.find(o => o.name.toLowerCase() === name) || {}).value;
+      const colour = opt("color") || opt("colour") || "Default";
+      const size = opt("size") || v.title;
+      if (!variants[colour]) { variants[colour] = {}; colors.push(colour); }
+      variants[colour][size] = { id: numId(v.id), available: v.availableForSale };
+      if (!sizes.includes(size)) sizes.push(size);
+      if (!gallery[colour] && v.image) {
+        // Qikink mockups: Front_1_c_<n> pairs with Back_2_c_<n> for the same colour
+        const m = v.image.url.match(/Front_1_c_(\d+)[_.]/);
+        const back = m ? allImgs.filter(u => new RegExp(`Back_2_c_${m[1]}[_.]`).test(u)) : [];
+        gallery[colour] = [v.image.url, ...back, ...sizeChart];
+      }
       const amt = parseFloat(v.price.amount);
       if (price === null || amt < price) price = amt;
     }
+    for (const c of colors) if (!gallery[c]) gallery[c] = allImgs;
+    sizes.sort((a, b) => SIZE_ORDER.indexOf(a) - SIZE_ORDER.indexOf(b));
     out.push({
-      h: n.handle, t: n.title, cat: n.productType || "More", d: "", fab: "",
-      price: Math.round(price), colors: ["Default"], sizes,
-      gallery: { Default: n.images.nodes.map(i => i.url) },
-      variants, isNew: true,
+      h: n.handle, t: n.title, cat: n.productType || "More", d: n.description || "", fab: "",
+      price: Math.round(price), colors, sizes, gallery, variants, isNew: true,
     });
   }
   return out;
