@@ -220,3 +220,14 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
   .card__quick{opacity:1;transform:none}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+/* ===== FAQ ===== */
+.faq{display:grid;gap:.7rem;max-width:860px}
+.faq__q{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:0 1.3rem;transition:border-color .2s}
+.faq__q[open]{border-color:var(--taxi)}
+.faq__q summary{cursor:pointer;list-style:none;padding:1.1rem 0;font-weight:600;font-size:1rem;display:flex;justify-content:space-between;gap:1rem;align-items:center}
+.faq__q summary::-webkit-details-marker{display:none}
+.faq__q summary::after{content:"✦";color:var(--taxi);transition:transform .25s;flex:none}
+.faq__q[open] summary::after{transform:rotate(45deg)}
+.faq__q p{color:var(--cream-dim);padding:0 0 1.2rem;font-size:.95rem;max-width:70ch}
+.faq__q a{color:var(--taxi);text-decoration:underline}

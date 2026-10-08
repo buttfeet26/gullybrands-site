@@ -8,12 +8,13 @@ const SHOPIFY_CHECKOUT = "https://5w3pdc-k7.myshopify.com";
 
 /* FALLBACK (snapshot.js) is only shown if Shopify can't be reached. */
 let PRODUCTS = FALLBACK;          // replaced by live Shopify data on load
-let CATS = ["All", ...new Set(FALLBACK.map(p => p.cat))];
+let CATS = ["All"];
 const inr = n => "₹" + n.toLocaleString("en-IN");
 const byH = h => PRODUCTS.find(p => p.h === h);
 /* resolve an image ref to a real src: gallery paths live under assets/, legacy design cards under assets/designs/ */
-const srcOf = ref => (ref.startsWith("http") || ref.startsWith("assets/")) ? ref
-                     : ref.includes("/") ? "assets/" + ref : "assets/designs/" + ref;
+const srcOf = (ref, w = 900) => ref.startsWith("http")
+    ? (ref.includes("cdn.shopify.com") ? ref + (ref.includes("?") ? "&" : "?") + "width=" + w : ref)   // Shopify CDN resizes on the fly
+    : ref.startsWith("assets/") ? ref : ref.includes("/") ? "assets/" + ref : "assets/designs/" + ref;
 /* variant lookup works for both the live shape {id,available} and the snapshot shape "id" */
 function variantOf(p, color, size) {
   const v = p.variants && p.variants[color] && p.variants[color][size];
@@ -22,7 +23,7 @@ function variantOf(p, color, size) {
 }
 /* images for a product+color: gallery if present, else the single design card */
 const imgsFor = (p, color) => p.gallery ? (p.gallery[color] || p.gallery[p.colors[0]]) : [p.img];
-const coverOf = p => srcOf(imgsFor(p, p.colors[0])[0]);
+const coverOf = p => srcOf(imgsFor(p, p.colors[0])[0], 640);
 let cart = JSON.parse(localStorage.getItem("gb_cart") || "[]");
 let activeCat = "All";
 
@@ -67,7 +68,7 @@ function crossfade(mediaEl, url) {
 }
 
 function renderGrid() {
-  const list = activeCat === "All" ? PRODUCTS : PRODUCTS.filter(p => p.cat === activeCat);
+  const list = activeCat === "All" ? PRODUCTS : PRODUCTS.filter(p => p.cat === activeCat || (p.vibes || []).includes(activeCat));
   document.getElementById("grid").innerHTML = list.map(productCard).join("");
   observeReveals();
   initCardCycles();
@@ -87,7 +88,7 @@ function initCardCycles() {
     const kick = setTimeout(() => {
       const iv = setInterval(() => {
         idx = (idx + 1) % imgs.length;
-        crossfade(card.querySelector(".card__media"), srcOf(imgs[idx]));
+        crossfade(card.querySelector(".card__media"), srcOf(imgs[idx], 640));
       }, 3200);
       cardTimers.push(iv);
     }, 900 + ci * 1100);
@@ -107,13 +108,13 @@ const allImgsOf = p => p.gallery ? [...new Set(p.colors.flatMap(c => p.gallery[c
 function qvGallery(p) {
   const imgs = qvState.imgs;
   const thumbs = imgs.length > 1 ? `<div class="qv__thumbs">` + imgs.map((im,i) =>
-    `<img src="${srcOf(im)}" class="${i===0?"is-on":""}" data-i="${i}" alt="">`).join("") + `</div>` : "";
-  return `<div class="qv__stage"><img class="ly is-show" src="${srcOf(imgs[0])}" alt="${p.t}"><img class="ly" alt="" aria-hidden="true"></div>${thumbs}`;
+    `<img src="${srcOf(im, 180)}" class="${i===0?"is-on":""}" data-i="${i}" alt="" loading="lazy">`).join("") + `</div>` : "";
+  return `<div class="qv__stage"><img class="ly is-show" src="${srcOf(imgs[0], 1100)}" alt="${p.t} — Y2K graphic crop top"><img class="ly" alt="" aria-hidden="true"></div>${thumbs}`;
 }
 function qvShow(idx) {
   if (!qvState) return;
   qvState.idx = idx;
-  crossfade(document.querySelector(".qv__stage"), srcOf(qvState.imgs[idx]));
+  crossfade(document.querySelector(".qv__stage"), srcOf(qvState.imgs[idx], 1100));
   const thumbs = document.querySelectorAll(".qv__thumbs img");
   thumbs.forEach((el,i) => el.classList.toggle("is-on", i === idx));
   if (thumbs[idx]) thumbs[idx].scrollIntoView({block:"nearest", behavior:"smooth"});
@@ -166,7 +167,7 @@ function addToCart(h, color, size){
   const key = `${h}|${color}|${size}`;
   const ex = cart.find(i => i.key === key);
   if (ex) ex.qty++;
-  else cart.push({ key, h, t:p.t, price:p.price, src:srcOf(imgsFor(p, color)[0]), color, size, qty:1,
+  else cart.push({ key, h, t:p.t, price:p.price, src:srcOf(imgsFor(p, color)[0], 200), color, size, qty:1,
                    vid: (variantOf(p, color, size) || {}).id || null });
   saveCart(); openCart(); toast(`Added — ${p.t}`);
 }
@@ -284,8 +285,9 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") { closeQuick
 async function boot() {
   const { products, live } = await loadProducts(FALLBACK);
   PRODUCTS = products;
-  const cats = [...new Set(PRODUCTS.map(p => p.cat))];
-  CATS = ["All", ...cats];
+  // shop by vibe (from Shopify tags); falls back to product types if nothing is tagged
+  const vibes = VIBES.map(v => v.label).filter(l => PRODUCTS.some(p => (p.vibes || []).includes(l)));
+  CATS = ["All", ...(vibes.length ? vibes : new Set(PRODUCTS.map(p => p.cat)))];
   if (!CATS.includes(activeCat)) activeCat = "All";
   renderFilters();
   renderGrid();

@@ -29,7 +29,7 @@ const GROUPS = [
 const SF_QUERY = `query GullyProducts {
   products(first: 50) {
     nodes {
-      id handle title availableForSale productType description descriptionHtml
+      id handle title availableForSale productType description descriptionHtml tags
       featuredImage { url }
       images(first: 30) { nodes { url } }
       variants(first: 100) {
@@ -43,6 +43,15 @@ const SF_QUERY = `query GullyProducts {
     }
   }
 }`;
+
+/* "Shop by vibe" filter chips, driven by Shopify product tags (in this order) */
+const VIBES = [
+  { label: "Y2K",              tags: ["y2k"] },
+  { label: "Coquette",         tags: ["coquette", "bow"] },
+  { label: "Slogan",           tags: ["slogan"] },
+  { label: "Grunge & Vintage", tags: ["grunge", "vintage", "retro"] },
+  { label: "Leopard",          tags: ["leopard"] },
+];
 
 /* sizes we know sort smallest -> largest; unknown sizes keep Shopify's order */
 const SIZE_ORDER = ["XS", "S", "M", "L", "XL", "XXL", "2XL", "3XL", "30", "32", "34", "36"];
@@ -140,6 +149,7 @@ function buildProducts(nodes) {
     out.push({
       h: n.handle, t: n.title, cat: n.productType || "More", d: cleanHtml(n.descriptionHtml) || n.description || "", fab: "",
       price: Math.round(price), colors, sizes, gallery, variants, isNew: true,
+      vibes: VIBES.filter(v => v.tags.some(t => n.tags.includes(t))).map(v => v.label),
     });
   }
   return out;
