@@ -34,7 +34,16 @@ ctx.__run().then(list => {
           itemCondition: "https://schema.org/NewCondition",
           shippingDetails: { "@type": "OfferShippingDetails",
             shippingRate: { "@type": "MonetaryAmount", value: "0", currency: "INR" },
-            shippingDestination: { "@type": "DefinedRegion", addressCountry: "IN" } },
+            shippingDestination: { "@type": "DefinedRegion", addressCountry: "IN" },
+            // Qikink: print + pack + dispatch 2–3 working days (Mon–Sat), courier 3–5 → keep in sync with Merchant Center
+            deliveryTime: { "@type": "ShippingDeliveryTime",
+              businessDays: { "@type": "OpeningHoursSpecification",
+                dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map(d => "https://schema.org/" + d) },
+              handlingTime: { "@type": "QuantitativeValue", minValue: 2, maxValue: 3, unitCode: "DAY" },
+              transitTime: { "@type": "QuantitativeValue", minValue: 3, maxValue: 5, unitCode: "DAY" } } },
+          // printed on demand: no change-of-mind returns (damaged/misprinted items are replaced, see help.html#returns)
+          hasMerchantReturnPolicy: { "@type": "MerchantReturnPolicy", applicableCountry: "IN",
+            returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted" },
         },
       },
     };

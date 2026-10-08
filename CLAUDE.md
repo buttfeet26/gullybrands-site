@@ -71,7 +71,11 @@ bot-filtered by fbevents: test with --disable-blink-features=AutomationControlle
 Purchase fires on Shopify checkout via the Shopify app (installed Oct 2026).
 Ad copy follows the brand rules above (no slang, never mention AI).
 
+## Google
+Search Console: property `https://shop.gullybrands.in/` (owner gullybrands.in@gmail.com, Composio `google_search_console_labber-dis`),
+verified by the meta tag, sitemap submitted Oct 2026. Homepage indexed; 12 Product rich results detected.
+Product JSON-LD (make-snapshot.js) carries delivery time + MerchantReturnNotPermitted — keep in sync with Merchant Center.
+
 ## Open to-dos for the owner
-- Submit `https://shop.gullybrands.in/sitemap.xml` in Google Search Console.
 - 48 unused old hoodie/tee photos still sit in `assets/products/` (deletion not yet approved).
 - Qikink's "Beige" looks pale yellow in mockups — confirm with a physical sample before renaming.
