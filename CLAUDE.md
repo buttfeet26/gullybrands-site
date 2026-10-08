@@ -29,7 +29,7 @@ the colours the print looks good on (black-on-black etc. were deleted).
 ## Delivery promises (must match Google Merchant Center shipping settings)
 Qikink: print + pack + dispatch 2–3 working days (Mon–Sat), courier 3–5 working days → ~5–8 total.
 Site copy, FAQ JSON-LD and Merchant Center (account 5871128361, timezone IST) all say this — change them together.
-Merchant Center site verification meta tag is in index.html — never remove it.
+Two google-site-verification meta tags are in index.html (6Y3rt… = Search Console/gullybrands.in@gmail.com, r_98q30… = Merchant Center 5871128361) — never remove either.
 
 ## Product photos (Mia, AI model) — done Oct 2026
 54 photos: one studio shot per colour (blush backdrop) + one lifestyle shot per design, made with
