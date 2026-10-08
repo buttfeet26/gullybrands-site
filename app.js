@@ -106,7 +106,11 @@ function renderFilters() {
 /* ---------- quick view (auto-scrolling gallery) ---------- */
 let qvState = null, qvTimer = null;
 /* every image of the product, all colourways combined */
-const allImgsOf = p => p.gallery ? [...new Set(p.colors.flatMap(c => p.gallery[c]))] : [p.img];
+const allImgsOf = p => {
+  if (!p.gallery) return [p.img];
+  const all = [...new Set(p.colors.flatMap(c => p.gallery[c]))], chart = u => /sizechart/i.test(u);
+  return [...all.filter(u => !chart(u)), ...all.filter(chart)];   // size chart always last
+};
 function qvGallery(p) {
   const imgs = qvState.imgs;
   const thumbs = imgs.length > 1 ? `<div class="qv__thumbs">` + imgs.map((im,i) =>
