@@ -51,8 +51,12 @@ When products/colours change: make the new shots the same way, upload with the a
 set variant images, then `node scripts/make-snapshot.js` and re-test (cards, colour switch,
 add to bag → checkout 302, no horizontal scroll at 390px).
 
+## Instagram
+@gullybrands.clothing (creator account) — Composio connection `instagram_diddy-waiter` (NOT `instagram_inky-inn`,
+that's Nakoda Gold). Oct 2026: 12 product carousels posted (Mia lifestyle shot first, then studio shot per
+colour; images from shop.gullybrands.in/assets/mia/). Linked in footer + JSON-LD `sameAs`.
+
 ## Open to-dos for the owner
 - Submit `https://shop.gullybrands.in/sitemap.xml` in Google Search Console.
-- Instagram handle → footer link + `sameAs` in the ClothingStore JSON-LD.
 - 48 unused old hoodie/tee photos still sit in `assets/products/` (deletion not yet approved).
 - Qikink's "Beige" looks pale yellow in mockups — confirm with a physical sample before renaming.
