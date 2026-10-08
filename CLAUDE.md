@@ -43,6 +43,8 @@ Krea 2 + Mia LoRA (pose) then Qwen-Image 2.1 edit (puts the exact product photo 
   `<title> in <Colour> — product photo, front|back` (Qikink mockup) · size chart last.
   Every colour's variants use its Mia studio shot as variant image.
 - Hero reel (5 lifestyle shots) and `assets/og.jpg` use these photos.
+- Size chart: branded `assets/gully-sizechart.png` (`scripts/make_sizechart.py`) is the last photo on
+  every product (Qikink's chart was removed) and is shown on help.html. Site keeps any `sizechart` image last.
 
 When products/colours change: make the new shots the same way, upload with the alt convention,
 set variant images, then `node scripts/make-snapshot.js` and re-test (cards, colour switch,
