@@ -32,6 +32,27 @@ const SHIPPING = {
 const RETURNS = { "@type": "MerchantReturnPolicy", applicableCountry: "IN",
   returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted" };
 
+const title = p => [`${p.t} for Women – Y2K Graphic | ₹${p.price} | Gully Brands`, `${p.t} for Women – Y2K | Gully Brands`,
+  `${p.t} | Gully Brands`].find(t => t.length <= 66) || `${p.t} | Gully Brands`;
+function metaDesc(p) {   // as many whole sentences of the vibe line as fit under Google's ~158-char cut-off
+  const tails = [` ₹${p.price}, sizes ${p.sizes[0]}–${p.sizes[p.sizes.length - 1]}, free shipping across India.`, ` ₹${p.price}, free shipping across India.`];
+  const sentences = vibeLine(p).match(/[^.!?]+[.!?]+/g) || [vibeLine(p)];
+  let best = "";
+  for (const tail of tails) for (let n = sentences.length; n >= 1; n--) {
+    const d = sentences.slice(0, n).join("").trim() + tail;
+    if (d.length <= 158 && d.length > best.length) best = d;
+  }
+  return best || (vibeLine(p).slice(0, 120) + "… " + tails[1].trim());
+}
+const crumbs = p => ({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+  { "@type": "ListItem", position: 1, name: "Home", item: SITE },
+  { "@type": "ListItem", position: 2, name: "Crop Tops", item: SITE + "#drop" },
+  { "@type": "ListItem", position: 3, name: p.t, item: pageUrl(p) } ] });
+/* 4 other tops: same vibe first, then the rest in catalogue order */
+const related = p => {
+  const same = PRODUCTS.filter(r => r.h !== p.h && (r.vibes || []).some(v => (p.vibes || []).includes(v)));
+  return [...same, ...PRODUCTS.filter(r => r.h !== p.h && !same.includes(r))].slice(0, 4);
+};
 const pixel = fs.readFileSync("index.html", "utf8").match(/<!-- Meta Pixel[\s\S]*?<\/noscript>/)[0];
 
 function page(p) {
@@ -58,13 +79,13 @@ function page(p) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(p.t)} — ₹${p.price} | Gully Brands</title>
-<meta name="description" content="${esc(desc)} ₹${p.price}, sizes ${p.sizes[0]}–${p.sizes[p.sizes.length - 1]}, free shipping across India.">
+<title>${esc(title(p))}</title>
+<meta name="description" content="${esc(metaDesc(p))}">
 <link rel="canonical" href="${pageUrl(p)}">
 <meta name="theme-color" content="#0A0A0A">
 <meta property="og:type" content="product">
 <meta property="og:site_name" content="Gully Brands">
-<meta property="og:title" content="${esc(p.t)} — ₹${p.price}">
+<meta property="og:title" content="${esc(title(p))}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${pageUrl(p)}">
 <meta property="og:image" content="${esc(img(first, 1200))}">
@@ -76,6 +97,7 @@ function page(p) {
 <link rel="preconnect" href="https://cdn.shopify.com">
 <link rel="stylesheet" href="/styles.css">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
+<script type="application/ld+json">${JSON.stringify(crumbs(p))}</script>
 <style>
   .pd{max-width:1100px;margin:0 auto;padding:clamp(1.5rem,4vw,3rem) 24px;display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(1.5rem,4vw,3.5rem)}
   .pd__main{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:18px;background:var(--panel)}
@@ -94,7 +116,12 @@ function page(p) {
   .pd__cta{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.6rem}
   .pd__note{color:var(--cream-dim);font-size:.88rem;margin-top:1rem}
   .pd__note a{color:var(--taxi)}
-  @media (max-width:760px){.pd{grid-template-columns:1fr}}
+  .crumbs{padding-top:1.2rem;font-size:.82rem;color:var(--cream-dim)}.crumbs a{color:var(--cream-dim)}.crumbs a:hover{color:var(--cream)}
+  .more{padding-bottom:3rem}.more h2{font-family:var(--billboard);font-weight:900;font-size:clamp(1.5rem,3.5vw,2.1rem);margin:2rem 0 1rem}
+  .details{list-style:none;display:grid;gap:.55rem;color:var(--cream-dim);line-height:1.6}.details b{color:var(--cream)}.details a{color:var(--taxi)}
+  .rel{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}.rel a{display:grid;gap:.35rem}.rel img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:14px}
+  .rel span{font-size:.9rem}.rel b{color:var(--taxi);font-size:.9rem}
+  @media (max-width:760px){.pd{grid-template-columns:1fr}.rel{grid-template-columns:repeat(2,1fr)}}
 </style>
 ${pixel}
 </head>
@@ -104,6 +131,7 @@ ${pixel}
   <nav class="nav"><a href="/#drop">The Drop</a><a href="/help.html#size-guide">Size Guide</a><a href="/help.html#shipping">Shipping</a></nav>
   <a class="cartbtn" href="/?bag=1">Bag <span id="bagCount"></span></a>
 </div></header>
+<nav class="crumbs wrap" aria-label="Breadcrumb"><a href="/">Home</a> › <a href="/#drop">Crop Tops</a> › <span>${esc(p.t)}</span></nav>
 <main class="pd">
   <div>
     <img class="pd__main" id="mainImg" src="${esc(img(first, 1100))}" alt="${esc(p.t)} in ${esc(p.colors[0])}" width="928" height="1152">
@@ -125,6 +153,18 @@ ${pixel}
     <p class="pd__note">Free shipping across India · Dispatched in 2–3 working days · Delivered in 5–8 days · Secure online payment.<br><a href="/help.html#size-guide">Size guide</a> · <a href="/help.html#returns">Returns</a></p>
   </div>
 </main>
+<section class="wrap more">
+  <h2>The details</h2>
+  <ul class="details">
+    <li><b>Fit:</b> cropped length, half sleeves, true to size (size up for a relaxed fit) — see the <a href="/help.html#size-guide">size guide</a></li>
+    <li><b>Fabric:</b> 100% super-combed, pre-shrunk cotton, 180 GSM</li>
+    <li><b>Colours:</b> ${esc(p.colors.join(", "))} · <b>Sizes:</b> ${p.sizes.join(", ")}</li>
+    <li><b>Printed in India</b> when you order · dispatched in 2–3 working days · delivered in 5–8 days · free shipping</li>
+    <li><b>Care:</b> wash inside out in cold water, dry on low heat, iron inside out</li>
+  </ul>
+  <h2>You might also love</h2>
+  <div class="rel">${related(p).map(r => `<a href="/p/${r.h}/"><img src="${esc(img(photos(r, r.colors[0])[0], 400))}" alt="${esc(r.t)} in ${esc(r.colors[0])}" loading="lazy" width="928" height="1152"><span>${esc(r.t)}</span><b>₹${r.price}</b></a>`).join("")}</div>
+</section>
 <footer class="ft"><div class="wrap"><div class="ft__bottom">
   <span>© Gully Brands Clothing · Made in India</span><a href="/#drop" style="color:var(--taxi)">See all 12 crop tops →</a>
 </div></div></footer>
@@ -147,7 +187,7 @@ function render() {
   $("colours").innerHTML = P.colors.map(c => '<button data-c="' + c + '" class="' + (c === colour ? "is-on" : "") + '">' + c + "</button>").join("");
   $("sizes").innerHTML = P.sizes.map(s => { const v = P.variants[colour][s];
     return '<button data-s="' + s + '" class="' + (s === size ? "is-on" : "") + '"' + (v && v.available ? "" : " disabled") + ">" + s + "</button>"; }).join("");
-  $("thumbs").innerHTML = P.gallery[colour].map((u, i) => '<img src="' + img(u, 160) + '" alt="" data-i="' + i + '">').join("");
+  $("thumbs").innerHTML = P.gallery[colour].map((u, i) => '<img src="' + img(u, 160) + '" alt="' + P.t + " in " + colour + ", photo " + (i + 1) + '" data-i="' + i + '">').join("");
   show(0);
 }
 document.addEventListener("click", e => {
