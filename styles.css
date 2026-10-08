@@ -156,6 +156,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .qv__title{font-family:var(--billboard);font-style:normal;font-weight:900;font-size:1.9rem;line-height:1.02}
 .qv__price{font-family:var(--disp);font-weight:800;color:var(--taxi);font-size:1.4rem;margin:.4rem 0 1rem}
 .qv__desc{color:var(--cream-dim);font-size:.96rem}
+.qv__desc p{margin:0 0 .45rem}.qv__desc p:last-child{margin-bottom:0}
 .qv__fab{color:var(--cream-dim);font-size:.82rem;margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--line)}
 .qv__label{font-family:var(--disp);text-transform:uppercase;letter-spacing:.16em;font-size:.68rem;color:var(--cream-dim);margin:1.2rem 0 .5rem}
 .qv__label #sizehint{color:var(--cream)}
