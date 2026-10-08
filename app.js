@@ -209,7 +209,7 @@ function updateCartUI(){
         </div>
       </div>
       <div class="ci__price">${inr(i.price*i.qty)}</div>
-    </div>`).join("") : `<div class="cart__empty">Your bag is empty.<br><span>Apni gully, apna brand — go grab a fit.</span></div>`;
+    </div>`).join("") : `<div class="cart__empty">Your bag is empty.<br><span>Your next main-character moment is one tap away.</span></div>`;
   document.getElementById("cartTotal").textContent = inr(cartTotal());
   document.getElementById("checkoutBtn").disabled = !cart.length;
 }

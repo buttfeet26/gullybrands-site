@@ -5,8 +5,11 @@ stock and checkout come live from Shopify (store `5w3pdc-k7.myshopify.com`, "Gul
 Clothing Headless" channel) via the Storefront API in `shopify.js`.
 
 ## Brand
-- Y2K crop tops for **baddies & it girls**. Tone: playful, confident, a bit of Hinglish
-  gully flavour ("Yeh fast fashion nahi hai. Yeh gully fashion hai.").
+- Y2K crop tops for **baddies & it girls**, Lana Del Rey vibes: cinematic, romantic, coquette,
+  old-money glamour, a little dark. Tone: polished, confident, short evocative lines.
+- **Owner rules (Oct 2026):** NO "gully"/tapri/Hinglish street slang or anything that reads cheap
+  (the brand name "Gully Brands" itself is fine). NEVER mention AI / that Mia is an AI model in any
+  public copy (captions, site, ads).
 - Look: black + hot pink (`--taxi:#FF4FA3`) with a pink-chrome gradient (`--chrome`),
   ✦ sparkles. Headline: "Baddie Era. Made Loud."
 - Artist/brand references in copy are OK (owner approved, e.g. "Lana Del Rey inspired").
@@ -55,6 +58,10 @@ add to bag → checkout 302, no horizontal scroll at 390px).
 @gullybrands.clothing (creator account) — Composio connection `instagram_diddy-waiter` (NOT `instagram_inky-inn`,
 that's Nakoda Gold). Oct 2026: 12 product carousels posted (Mia lifestyle shot first, then studio shot per
 colour; images from shop.gullybrands.in/assets/mia/). Linked in footer + JSON-LD `sameAs`.
+Caption format: evocative hook line + emoji, one-sentence description, "₹499 · Sizes XS–XXL", colours,
+"Soft 180 GSM cotton. Free shipping across India.", "Shop via the link in bio ✦", ~11 hashtags
+(#itgirl #baddiestyle #lanadelreyaesthetic #coquette …). The API can't edit or delete posts; the owner
+does that in the app. Post one at a time (bulk calls time out).
 
 ## Open to-dos for the owner
 - Submit `https://shop.gullybrands.in/sitemap.xml` in Google Search Console.
