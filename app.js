@@ -125,7 +125,14 @@ function qvShow(idx) {
   thumbs.forEach((el,i) => el.classList.toggle("is-on", i === idx));
   if (thumbs[idx]) thumbs[idx].scrollIntoView({block:"nearest", behavior:"smooth"});
 }
-function qvNext(){ if (qvState) qvShow((qvState.idx + 1) % qvState.imgs.length); }
+function qvNext(){                         // auto-shuffle skips the size chart (tap its thumb to see it)
+  if (!qvState) return;
+  const n = qvState.imgs.length;
+  for (let k = 1; k <= n; k++) {
+    const i = (qvState.idx + k) % n;
+    if (!/sizechart/i.test(qvState.imgs[i])) return qvShow(i);
+  }
+}
 function qvAuto(){ qvStop(); qvTimer = setInterval(qvNext, 2400); }
 function qvStop(){ if (qvTimer) { clearInterval(qvTimer); qvTimer = null; } }
 function openQuick(h) {
