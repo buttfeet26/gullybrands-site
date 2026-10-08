@@ -82,7 +82,9 @@ function initCardCycles() {
   document.querySelectorAll(".card").forEach((card, ci) => {
     const p = byH(card.dataset.h);
     if (!p) return;
-    const imgs = allImgsOf(p);
+    // cards cycle through the model/lifestyle shots only; plain product photos + size chart stay in quick view
+    const all = allImgsOf(p), styled = all.filter(u => !/Front_1_c_|Back_2_c_|sizechart/i.test(u));
+    const imgs = styled.length ? styled : all;
     if (imgs.length < 2) return;
     let idx = 0;
     const kick = setTimeout(() => {
@@ -158,7 +160,7 @@ function openQuick(h) {
   const media = document.querySelector(".qv__media");
   if (media) { media.addEventListener("mouseenter", qvStop); media.addEventListener("mouseleave", qvAuto); }
 }
-function closeQuick(){ qvStop(); document.getElementById("qv").classList.remove("is-open"); document.body.classList.remove("noscroll"); }
+function closeQuick(){ if (location.hash && byH(decodeURIComponent(location.hash.slice(1)))) history.replaceState(null, "", location.pathname + location.search); qvStop(); document.getElementById("qv").classList.remove("is-open"); document.body.classList.remove("noscroll"); }
 
 /* ---------- cart ---------- */
 function saveCart(){ localStorage.setItem("gb_cart", JSON.stringify(cart)); updateCartUI(); }
@@ -297,6 +299,11 @@ async function boot() {
   // product links (e.g. from Google / Instagram): shop.gullybrands.in/#crop-top-11 opens that product
   const linked = byH(decodeURIComponent(location.hash.slice(1)));
   if (linked) { document.getElementById("drop").scrollIntoView(); openQuick(linked.h); }
+  // in-page product links (hero reel) open the product too
+  window.addEventListener("hashchange", () => {
+    const p = byH(decodeURIComponent(location.hash.slice(1)));
+    if (p) openQuick(p.h);
+  });
 }
 boot();
 document.getElementById("year").textContent = new Date().getFullYear();

@@ -28,28 +28,25 @@ Qikink: print + pack + dispatch 2–3 working days (Mon–Sat), courier 3–5 wo
 Site copy, FAQ JSON-LD and Merchant Center (account 5871128361, timezone IST) all say this — change them together.
 Merchant Center site verification meta tag is in index.html — never remove it.
 
-## When new photos arrive (e.g. Mia wearing the tops) — update ALL of these
-Current images are Qikink mockups (`Front_1_c_<n>` / `Back_2_c_<n>` + size chart), and the
-site picks each colour's front/back by that filename. Real photos change that, so:
+## Product photos (Mia, AI model) — done Oct 2026
+54 photos: one studio shot per colour (blush backdrop) + one lifestyle shot per design, made with
+Krea 2 + Mia LoRA (pose) then Qwen-Image 2.1 edit (puts the exact product photo on her) via
+`gully-media/gully.py`. Files: `assets/mia/<handle>__<colour>__<studio|life>.jpg`; prompts in
+`scripts/mia/shots.json` (`make_shots.py` builds it, `run_shots.py` runs it, `make_og.py` = share image).
+- **GPU rule: ONE job at a time** (8 in parallel jammed the Modal backend and burned money).
+  run_shots.py has a 15-min cap, no retries, stops on first failure. Owner is cost-sensitive.
+- Qwen-Image 2.1 is a non-commercial licence — owner chose to use it anyway.
+- QC every shot: print spelling/placement, colour, face in frame, nothing covering the print
+  (grunge styling uses a high choker — chain necklaces covered the Radio Silence print).
+- Shopify alt-text convention drives the site gallery (`buildProducts` in `shopify.js`):
+  `Mia wearing the <title> in <Colour>` (studio, first) · `… in <Colour> — <scene>` (lifestyle) ·
+  `<title> in <Colour> — product photo, front|back` (Qikink mockup) · size chart last.
+  Every colour's variants use its Mia studio shot as variant image.
+- Hero reel (5 lifestyle shots) and `assets/og.jpg` use these photos.
 
-1. **Shopify product media** — upload Mia's photos to each product and attach them to the
-   right colour variant (variant image = first photo for that colour). Decide whether to
-   keep the mockups after them or remove them.
-2. **Site gallery logic** (`buildProducts` in `shopify.js`) — it pairs `Front_1_c_<n>` with
-   `Back_2_c_<n>`. If the new files are named differently, either add the photos to the
-   colour gallery (variant image + extra lifestyle shots) or add a `GROUPS` entry with
-   campaign photos in `assets/products/`. Card cover = first image of the first colour.
-3. **Share image** `assets/og.jpg` (1200×630) — rebuild with Mia photos instead of the three
-   mockup tiles (Fraunces Billboard font in `assets/fonts/`, pink chrome "Made Loud.").
-4. **Hero** — currently text-only; with real photos, add a model shot/collage to the hero.
-5. **Regenerate** `node scripts/make-snapshot.js` (from repo root) → refreshes `snapshot.js`
-   (offline fallback) and the product JSON-LD images in `index.html`.
-6. **Alt text** — describe the model shots (e.g. "Mia wearing the Crystal Bow crop top in
-   black"), not just the product name.
-7. Re-run a browser check: all cards render, colour switch shows the right photos,
-   add to bag → checkout URL 302s to a Shopify checkout, no horizontal scroll at 390px.
-
-Also re-run step 5 whenever products, colours, prices or handles change.
+When products/colours change: make the new shots the same way, upload with the alt convention,
+set variant images, then `node scripts/make-snapshot.js` and re-test (cards, colour switch,
+add to bag → checkout 302, no horizontal scroll at 390px).
 
 ## Open to-dos for the owner
 - Submit `https://shop.gullybrands.in/sitemap.xml` in Google Search Console.
