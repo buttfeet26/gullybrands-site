@@ -147,16 +147,20 @@ function buildProducts(nodes) {
     /* Photos labelled in Shopify (alt text) win over the Qikink filename pairing:
          "Mia wearing the <title> in <Colour>"                  model shot (first)
          "Mia wearing the <title> in <Colour> — <scene>"        lifestyle shot
-         "<title> in <Colour> — product photo, front|back"      plain product photo (last) */
+         "<title> in <Colour> — product photo, front|back"      Qikink mockup (another model) — hidden
+                                                                when the colour has Mia shots */
+    const mockup = i => /— product photo/.test(i.altText || "") || /Front_1_c_|Back_2_c_/.test(i.url);
     for (const c of colors) {
       const esc = c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const mine = n.images.nodes.filter(i => new RegExp(` in ${esc}( —|$)`).test(i.altText || ""));
+      let mine = n.images.nodes.filter(i => new RegExp(` in ${esc}( —|$)`).test(i.altText || ""));
+      if (mine.some(i => !mockup(i))) mine = mine.filter(i => !mockup(i));
       if (!mine.length) continue;
       const rank = alt => /^Mia/.test(alt) ? (alt.includes("—") ? 1 : 0) : /front/.test(alt) ? 2 : 3;
       mine.sort((x, y) => rank(x.altText) - rank(y.altText));
       gallery[c] = [...mine.map(i => i.url), ...sizeChart];
     }
-    for (const c of colors) if (!gallery[c]) gallery[c] = allImgs;
+    const nonMockup = n.images.nodes.filter(i => !mockup(i)).map(i => i.url);
+    for (const c of colors) if (!gallery[c]) gallery[c] = nonMockup.length > sizeChart.length ? nonMockup : allImgs;
     sizes.sort((a, b) => SIZE_ORDER.indexOf(a) - SIZE_ORDER.indexOf(b));
     out.push({
       h: n.handle, t: n.title, cat: n.productType || "More", d: cleanHtml(n.descriptionHtml) || n.description || "", fab: "",

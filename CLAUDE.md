@@ -40,7 +40,8 @@ Krea 2 + Mia LoRA (pose) then Qwen-Image 2.1 edit (puts the exact product photo 
   (grunge styling uses a high choker — chain necklaces covered the Radio Silence print).
 - Shopify alt-text convention drives the site gallery (`buildProducts` in `shopify.js`):
   `Mia wearing the <title> in <Colour>` (studio, first) · `… in <Colour> — <scene>` (lifestyle) ·
-  `<title> in <Colour> — product photo, front|back` (Qikink mockup) · size chart last.
+  `<title> in <Colour> — product photo, front|back` (Qikink mockup, other model — hidden on the site
+  whenever a colour has Mia shots; still in Shopify) · size chart last.
   Every colour's variants use its Mia studio shot as variant image.
 - Hero reel (5 lifestyle shots) and `assets/og.jpg` use these photos.
 - Size chart: branded `assets/gully-sizechart.png` (`scripts/make_sizechart.py`) is the last photo on
