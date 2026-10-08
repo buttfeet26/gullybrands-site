@@ -23,6 +23,11 @@ the colours the print looks good on (black-on-black etc. were deleted).
 - Each product has SEO title/description, a vibe line opening its description, and a
   readable handle (e.g. `crystal-bow-crop-top`; old handles redirect).
 
+## Delivery promises (must match Google Merchant Center shipping settings)
+Qikink: print + pack + dispatch 2–3 working days (Mon–Sat), courier 3–5 working days → ~5–8 total.
+Site copy, FAQ JSON-LD and Merchant Center (account 5871128361, timezone IST) all say this — change them together.
+Merchant Center site verification meta tag is in index.html — never remove it.
+
 ## When new photos arrive (e.g. Mia wearing the tops) — update ALL of these
 Current images are Qikink mockups (`Front_1_c_<n>` / `Back_2_c_<n>` + size chart), and the
 site picks each colour's front/back by that filename. Real photos change that, so:
