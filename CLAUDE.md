@@ -10,8 +10,21 @@ Clothing Headless" channel) via the Storefront API in `shopify.js`.
 - **Owner rules (Oct 2026):** NO "gully"/tapri/Hinglish street slang or anything that reads cheap
   (the brand name "Gully Brands" itself is fine). NEVER mention AI / that Mia is an AI model in any
   public copy (captions, site, ads).
-- Look: black + hot pink (`--taxi:#FF4FA3`) with a pink-chrome gradient (`--chrome`),
-  ✦ sparkles. Headline: "Baddie Era. Made Loud."
+- Headline: "Baddie Era. Made Loud." Hot pink `--taxi:#FF4FA3` (deep `--taxi-deep`) is the accent.
+- **Look (redesign 17 Oct 2026, owner: "mix Mirror Palais / LoveShackFancy / Motel Rocks / I.AM.GIA /
+  Frankies / For Love & Lemons and create with freedom"):** cream paper editorial — `--paper:#F7EFDF`
+  with `assets/decor/paper.jpg` texture, blush `--blush`, ink `--ink:#1B1316`; `.dark` sections flip to
+  ink (story, footer). Fraunces VF thin italic display (`.sec__head h2`, hero "Baddie Era."), Fraunces
+  Billboard for "Made Loud."/logo, Pinyon Script for script lines (`.script`), Inter body (Google Fonts).
+  Arch-shaped photos (`--arch`), outlined marquee strip, satin section, rotating "free shipping" badge.
+  Old names `--cream/--cream-dim/--panel/--line` are aliases so `app.js`/product pages keep working.
+- Decor cut-outs in `assets/decor/` (bow, pearls, clips, roses, kiss = transparent WebP; satin, paper =
+  jpg) were generated with Gemini `gemini-3-pro-image` (`scripts/decor/gen.sh`, prompts in
+  `scripts/decor/prompts/`, rendered on pure black then keyed with `scripts/decor/key.py`). Of the owner's
+  11 Gemini keys only #4 (buttfeet26 free project) can generate images; the "Tier 1" ones return
+  RESOURCE_EXHAUSTED limit 0. `.decor` imgs are `position:absolute; height:auto` — keep width/height
+  attrs equal to the real file size. Playwright full-page captures stretch them; judge decor from
+  viewport screenshots.
 - Artist/brand references in copy are OK (owner approved, e.g. "Lana Del Rey inspired").
 
 ## Catalogue (as of Oct 2026)
@@ -48,7 +61,8 @@ Krea 2 + Mia LoRA (pose) then Qwen-Image 2.1 edit (puts the exact product photo 
   `<title> in <Colour> — product photo, front|back` (Qikink mockup, other model — hidden on the site
   whenever a colour has Mia shots; still in Shopify) · size chart last.
   Every colour's variants use its Mia studio shot as variant image.
-- Hero reel (5 lifestyle shots) and `assets/og.jpg` use these photos.
+- Hero shows two lifestyle arches (crystal-bow black, national-anthem white); lookbook = 6 lifestyle
+  tiles; `assets/og.jpg` uses these photos (still the pre-redesign black/pink look — restyle when convenient).
 - Size chart: branded `assets/gully-sizechart.png` (`scripts/make_sizechart.py`) is the last photo on
   every product (Qikink's chart was removed) and is shown on help.html. Site keeps any `sizechart` image last.
 

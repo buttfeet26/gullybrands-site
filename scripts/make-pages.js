@@ -82,7 +82,7 @@ function page(p) {
 <title>${esc(title(p))}</title>
 <meta name="description" content="${esc(metaDesc(p))}">
 <link rel="canonical" href="${pageUrl(p)}">
-<meta name="theme-color" content="#0A0A0A">
+<meta name="theme-color" content="#F7EFDF">
 <meta property="og:type" content="product">
 <meta property="og:site_name" content="Gully Brands">
 <meta property="og:title" content="${esc(title(p))}">
@@ -94,33 +94,36 @@ function page(p) {
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://cdn.shopify.com">
 <link rel="stylesheet" href="/styles.css">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 <script type="application/ld+json">${JSON.stringify(crumbs(p))}</script>
 <style>
   .pd{max-width:1100px;margin:0 auto;padding:clamp(1.5rem,4vw,3rem) 24px;display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(1.5rem,4vw,3.5rem)}
-  .pd__main{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:18px;background:var(--panel)}
+  .pd__main{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--arch);background:var(--blush)}
   .pd__thumbs{display:flex;gap:.6rem;margin-top:.8rem;overflow-x:auto}
   .pd__thumbs img{width:72px;aspect-ratio:4/5;object-fit:cover;border-radius:10px;opacity:.55;cursor:pointer;border:2px solid transparent}
   .pd__thumbs img.is-on{opacity:1;border-color:var(--taxi)}
-  .pd h1{font-family:var(--billboard);font-weight:900;font-size:clamp(2rem,5vw,3.2rem);line-height:1;letter-spacing:-.02em}
-  .pd__price{font-family:var(--disp);font-size:1.6rem;font-weight:700;color:var(--taxi);margin:.8rem 0 1rem}
+  .pd h1{font-family:var(--disp);font-weight:300;font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 40;font-size:clamp(2.4rem,5.5vw,3.8rem);line-height:.95;letter-spacing:-.02em}
+  .pd__price{font-family:var(--disp);font-size:1.5rem;font-weight:500;color:var(--taxi-deep);margin:.8rem 0 1rem}
   .pd__desc{color:var(--cream-dim);line-height:1.7}
-  .pd__desc p{margin:.6rem 0}.pd__desc strong{color:var(--cream)}
-  .pd__label{font-family:var(--disp);text-transform:uppercase;letter-spacing:.18em;font-size:.72rem;color:var(--cream-dim);margin:1.4rem 0 .6rem}
+  .pd__desc p{margin:.6rem 0}.pd__desc strong{color:var(--ink);font-weight:500}
+  .pd__label{text-transform:uppercase;letter-spacing:.22em;font-size:.64rem;font-weight:500;color:var(--cream-dim);margin:1.4rem 0 .6rem}
   .pd__opts{display:flex;flex-wrap:wrap;gap:.5rem}
-  .pd__opts button{border:1px solid var(--line);border-radius:999px;padding:.55rem 1rem;color:var(--cream);background:transparent;font:inherit;cursor:pointer}
-  .pd__opts button.is-on{border-color:var(--taxi);background:rgba(255,79,163,.12)}
+  .pd__opts button{border:1px solid var(--line);border-radius:999px;padding:.55rem 1rem;color:var(--ink);background:transparent;font:inherit;font-size:.85rem;cursor:pointer}
+  .pd__opts button.is-on{border-color:var(--ink);background:var(--ink);color:var(--paper)}
   .pd__opts button:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed}
   .pd__cta{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.6rem}
   .pd__note{color:var(--cream-dim);font-size:.88rem;margin-top:1rem}
-  .pd__note a{color:var(--taxi)}
+  .pd__note a{color:var(--taxi-deep);text-decoration:underline}
   .crumbs{padding-top:1.2rem;font-size:.82rem;color:var(--cream-dim)}.crumbs a{color:var(--cream-dim)}.crumbs a:hover{color:var(--cream)}
-  .more{padding-bottom:3rem}.more h2{font-family:var(--billboard);font-weight:900;font-size:clamp(1.5rem,3.5vw,2.1rem);margin:2rem 0 1rem}
-  .details{list-style:none;display:grid;gap:.55rem;color:var(--cream-dim);line-height:1.6}.details b{color:var(--cream)}.details a{color:var(--taxi)}
-  .rel{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}.rel a{display:grid;gap:.35rem}.rel img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:14px}
-  .rel span{font-size:.9rem}.rel b{color:var(--taxi);font-size:.9rem}
+  .more{padding-bottom:3rem}.more h2{font-family:var(--disp);font-weight:300;font-style:italic;font-variation-settings:"opsz" 144;font-size:clamp(1.8rem,3.5vw,2.4rem);margin:2.4rem 0 1rem}
+  .details{list-style:none;display:grid;gap:.55rem;color:var(--cream-dim);line-height:1.6}.details b{color:var(--ink);font-weight:500}.details a{color:var(--taxi-deep);text-decoration:underline}
+  .rel{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}.rel a{display:grid;gap:.35rem}.rel img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--arch)}
+  .rel span{font-family:var(--disp);font-style:italic;font-size:.95rem;text-align:center}.rel b{color:var(--taxi-deep);font-size:.82rem;font-weight:500;text-align:center}
   @media (max-width:760px){.pd{grid-template-columns:1fr}.rel{grid-template-columns:repeat(2,1fr)}}
 </style>
 ${pixel}
@@ -138,7 +141,7 @@ ${pixel}
     <div class="pd__thumbs" id="thumbs"></div>
   </div>
   <div>
-    <div class="label">Y2K graphic crop top</div>
+    <div class="label">Y2K graphic crop top · ₹${p.price} · free shipping</div>
     <h1>${esc(p.t)}</h1>
     <div class="pd__price">₹${p.price}</div>
     <div class="pd__desc">${p.d}</div>
@@ -165,7 +168,7 @@ ${pixel}
   <h2>You might also love</h2>
   <div class="rel">${related(p).map(r => `<a href="/p/${r.h}/"><img src="${esc(img(photos(r, r.colors[0])[0], 400))}" alt="${esc(r.t)} in ${esc(r.colors[0])}" loading="lazy" width="928" height="1152"><span>${esc(r.t)}</span><b>₹${r.price}</b></a>`).join("")}</div>
 </section>
-<footer class="ft"><div class="wrap"><div class="ft__bottom">
+<footer class="ft dark"><div class="wrap"><div class="ft__bottom">
   <span>© Gully Brands Clothing · Made in India · A <a href="https://gullybrands.in" rel="noopener" style="color:var(--taxi)">Gully Brands</a> label</span><a href="/#drop" style="color:var(--taxi)">See all 12 crop tops →</a>
 </div></div></footer>
 <script>
