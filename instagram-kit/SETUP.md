@@ -4,7 +4,7 @@ Instagram doesn't let apps change the photo, name or bio, so do these in the app
 **Profile → Edit profile**.
 
 ## 1. Profile photo
-Upload `profile-photo.jpg` (pink-chrome GB on black, matches the site).
+Upload `profile-photo.jpg` (thin italic GB with a satin bow on cream paper — matches the site).
 
 ## 2. Name (this field is searchable, so use keywords)
 ```
@@ -13,16 +13,16 @@ Gully Brands | Y2K Crop Tops
 
 ## 3. Bio (fits Instagram's 150-character limit)
 ```
-Y2K crop tops for the it girl 🎀
-Coquette · leopard · grunge · ₹499
-Free shipping across India ✦
-Shop the drop ↓
+Born to be adored ✦
+Y2K crop tops for it girls & hopeless romantics
+₹499 · free shipping across India
+Shop the collection ↓
 ```
 
 ## 4. Link
 Edit profile → Links → Add external link
 - URL: `https://shop.gullybrands.in`
-- Title: `Shop the drop`
+- Title: `Shop the collection`
 
 ## 5. Category & contact
 Edit profile → Category: **Clothing (Brand)** · turn **Display category** on.
