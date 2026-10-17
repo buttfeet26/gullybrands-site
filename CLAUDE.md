@@ -39,7 +39,8 @@ the colours the print looks good on (black-on-black etc. were deleted).
   can't see them (and cart permalinks fail).
 - Tags drive the site's "shop by vibe" chips (`VIBES` in `shopify.js`): `y2k`, `coquette`/`bow`,
   `slogan`, `grunge`/`vintage`/`retro`, `leopard`. Every product should hit at least one.
-- Each product has SEO title/description, a vibe line opening its description, and a
+- Each product has SEO title/description, a vibe line opening its description (rewritten 17 Oct 2026 in the
+  romantic/coquette tone — no slang, no "baddie edition"), and a
   readable handle (e.g. `crystal-bow-crop-top`; old handles redirect).
 
 ## Delivery promises (must match Google Merchant Center shipping settings)
@@ -47,29 +48,35 @@ Qikink: print + pack + dispatch 2–3 working days (Mon–Sat), courier 3–5 wo
 Site copy, FAQ JSON-LD and Merchant Center (account 5871128361, timezone IST) all say this — change them together.
 Two google-site-verification meta tags are in index.html (6Y3rt… = Search Console/gullybrands.in@gmail.com, r_98q30… = Merchant Center 5871128361) — never remove either.
 
-## Product photos (Mia, AI model) — done Oct 2026
-54 photos: one studio shot per colour (blush backdrop) + one lifestyle shot per design, made with
-Krea 2 + Mia LoRA (pose) then Qwen-Image 2.1 edit (puts the exact product photo on her) via
-`gully-media/gully.py`. Files: `assets/mia/<handle>__<colour>__<studio|life>.jpg`; prompts in
-`scripts/mia/shots.json` (`make_shots.py` builds it, `run_shots.py` runs it, `make_og.py` = share image).
-- **GPU rule: ONE job at a time** (8 in parallel jammed the Modal backend and burned money).
-  run_shots.py has a 15-min cap, no retries, stops on first failure. Owner is cost-sensitive.
-- Qwen-Image 2.1 is a non-commercial licence — owner chose to use it anyway.
-- QC every shot: print spelling/placement, colour, face in frame, nothing covering the print
-  (grunge styling uses a high choker — chain necklaces covered the Radio Silence print).
+## Product photos (Mia, AI model) — redone 17 Oct 2026
+54 photos, one **per-design shoot** (owner: "each product needs its own style, match the aesthetic of the top;
+adult it-girl / Pinterest / Y2K, not baby-pink"): a lifestyle scene per design + a matching studio set per
+colour (Spider charcoal+lace, Radio Silence concrete, 8 Ball green, Brunette cream, Lucky Girl red, Leopard
+black, Star Girl silver, Lucky 8 navy, Monaco blue-grey, National Anthem warm beige, Blonde sky-blue,
+Crystal Bow greige). Mia is mid-twenties, slim hourglass; **blonde** for Life Is Better Blonde.
+Made with Gemini `gemini-3-pro-image` (key #4) from the Qikink mockup + a chest crop of the print as
+reference — pipeline in the session scratchpad `shoot/` (`plan.py` per-product briefs, `run.py` lifestyle →
+studio per colour using the lifestyle shot as face/tee reference, `redo.py` re-runs a studio shot from a
+good sibling studio shot — the fix for face/print drift, `finalize.py` → `assets/mia/` 1200x1500 + alt
+manifest). Lessons: no necklaces/chains (they cover the print); ask for "no readable brand names, logos or
+signage" (dive bar / Monaco first drafts had beer and Ferrari logos); white studio shots drift most — re-run
+from a sibling colour; QC every render against the mockup crop (print redrawn ≈ 1 in 8).
+Files: `assets/mia/<handle>__<colour>__<studio|life>.jpg`; share image via `scripts/mia/make_og.py`
+(cream look). Older Krea/Qwen pipeline (`scripts/mia/*.py`, `gully-media/gully.py`) is superseded.
+- Qwen-Image 2.1 licence note no longer applies (not used for the current set).
 - Shopify alt-text convention drives the site gallery (`buildProducts` in `shopify.js`):
   `Mia wearing the <title> in <Colour>` (studio, first) · `… in <Colour> — <scene>` (lifestyle) ·
   `<title> in <Colour> — product photo, front|back` (Qikink mockup, other model — hidden on the site
   whenever a colour has Mia shots; still in Shopify) · size chart last.
-  Every colour's variants use its Mia studio shot as variant image.
-- Hero shows two lifestyle arches (crystal-bow black, national-anthem white); lookbook = 6 lifestyle
-  tiles; `assets/og.jpg` uses these photos (still the pre-redesign black/pink look — restyle when convenient).
+  Every colour's variants use its Mia studio shot as variant image; Mia media are first in each gallery.
+- Hero shows two lifestyle arches (crystal-bow black, national-anthem white); lookbook = 6 lifestyle tiles.
 - Size chart: branded `assets/gully-sizechart.png` (`scripts/make_sizechart.py`) is the last photo on
   every product (Qikink's chart was removed) and is shown on help.html. Site keeps any `sizechart` image last.
 
-When products/colours change: make the new shots the same way, upload with the alt convention,
-set variant images, then `node scripts/make-snapshot.js` and re-test (cards, colour switch,
-add to bag → checkout 302, no horizontal scroll at 390px).
+When products/colours change: make the new shots the same way, push to `assets/mia/` (GitHub Pages hosts
+them), `productCreateMedia` from the shop URLs with the alt convention, delete the old Mia media, set variant
+images + reorder, then `node scripts/make-snapshot.js` and re-test (cards, colour switch, add to bag →
+checkout 302, no horizontal scroll at 390px).
 
 ## Instagram
 @gullybrands.clothing (creator account) — Composio connection `instagram_diddy-waiter` (NOT `instagram_inky-inn`,
