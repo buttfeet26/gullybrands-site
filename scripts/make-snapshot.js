@@ -48,7 +48,7 @@ ctx.__run().then(list => {
       },
     };
   });
-  const ld = { "@context": "https://schema.org", "@type": "ItemList", name: "Y2K baddie crop tops", itemListElement: items };
+  const ld = { "@context": "https://schema.org", "@type": "ItemList", name: "Y2K crop tops for it girls", itemListElement: items };
   const html = fs.readFileSync("index.html", "utf8").replace(
     /<!--ld:products-->[\s\S]*?<!--\/ld:products-->/,
     `<!--ld:products--><script type="application/ld+json">${JSON.stringify(ld)}</script><!--/ld:products-->`);

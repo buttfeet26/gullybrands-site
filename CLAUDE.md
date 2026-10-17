@@ -10,7 +10,8 @@ Clothing Headless" channel) via the Storefront API in `shopify.js`.
 - **Owner rules (Oct 2026):** NO "gully"/tapri/Hinglish street slang or anything that reads cheap
   (the brand name "Gully Brands" itself is fine). NEVER mention AI / that Mia is an AI model in any
   public copy (captions, site, ads).
-- Headline: "Baddie Era. Made Loud." Hot pink `--taxi:#FF4FA3` (deep `--taxi-deep`) is the accent.
+- Headline: "Born to be adored." (owner, 17 Oct 2026: do NOT use the parent-brand
+  "Baddie Era. Made Loud." / loud-slogan style on this site — keep copy romantic, coquette, old-money.) Hot pink `--taxi:#FF4FA3` (deep `--taxi-deep`) is the accent.
 - **Look (redesign 17 Oct 2026, owner: "mix Mirror Palais / LoveShackFancy / Motel Rocks / I.AM.GIA /
   Frankies / For Love & Lemons and create with freedom"):** cream paper editorial — `--paper:#F7EFDF`
   with `assets/decor/paper.jpg` texture, blush `--blush`, ink `--ink:#1B1316`; `.dark` sections flip to
