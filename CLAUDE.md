@@ -67,11 +67,12 @@ does that in the app. Post one at a time (bulk calls time out).
 
 ## Meta ads
 Ad account "Gully Brands" 1012183625146645 (INR), FB Page "Gully Brands" 1199817166551074.
-Meta pixel "Gully Brands · Mumbai's pixel" 2541478776319465 (created by Shopify's Facebook & Instagram app, so Purchase lands on it too) on index.html + help.html. Do NOT use 1064261386377988 ("Gully Brands app") for new ads — it belongs to app.gullybrands.in. It is TEMPORARILY also initialised on the site until the Oct crop-top campaign ends (16 Oct 2026; its ad set is locked to that pixel) — remove that fbq init line after; app.js fires ViewContent (quick view),
+Meta pixel "Gully Brands · Mumbai's pixel" 2541478776319465 (created by Shopify's Facebook & Instagram app, so Purchase lands on it too) on index.html + help.html. Do NOT use 1064261386377988 ("Gully Brands app") for new ads — it belongs to app.gullybrands.in.; app.js fires ViewContent (quick view),
 AddToCart, InitiateCheckout (300 ms delay before the Shopify redirect). Headless test browsers are
 bot-filtered by fbevents: test with --disable-blink-features=AutomationControlled + a mobile UA.
 Purchase fires on Shopify checkout via the Shopify app (installed Oct 2026).
 Ad copy follows the brand rules above (no slang, never mention AI).
+Oct 2026 campaign "GB Shop | Crop Tops | Sales | Oct 2026" (₹100/day, 9–16 Oct, 2 carousels covering all 12 tops) ended; it used the old pixel, removed from the site 17 Oct.
 
 ## Product pages + Google feed
 `p/<handle>/index.html` (one real page per product, ?colour=&size= preselect, Add to bag → `/?bag=1`,
