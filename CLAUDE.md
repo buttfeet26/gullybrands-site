@@ -80,8 +80,11 @@ checkout 302, no horizontal scroll at 390px).
 
 ## Instagram
 @gullybrands.clothing (creator account) — Composio connection `instagram_diddy-waiter` (NOT `instagram_inky-inn`,
-that's Nakoda Gold). Oct 2026: 12 product carousels posted (Mia lifestyle shot first, then studio shot per
-colour; images from shop.gullybrands.in/assets/mia/). Linked in footer + JSON-LD `sameAs`.
+that's Nakoda Gold; the Composio "account" field takes the alias "Gully brands clothing"). 17 Oct 2026: 12 new
+product carousels posted with the per-design shoot (Mia lifestyle shot first, then studio shot per colour;
+images from shop.gullybrands.in/assets/mia/, captions in the romantic/coquette tone). The 12 carousels from
+8 Oct (old photos, DePY…/DePZ… permalinks) must be deleted by the owner in the app — the API has no media
+delete, only comment delete. Linked in footer + JSON-LD `sameAs`.
 Caption format: evocative hook line + emoji, one-sentence description, "₹499 · Sizes XS–XXL", colours,
 "Soft 180 GSM cotton. Free shipping across India.", "Shop via the link in bio ✦", ~11 hashtags
 (#itgirl #baddiestyle #lanadelreyaesthetic #coquette …). The API can't edit or delete posts; the owner
