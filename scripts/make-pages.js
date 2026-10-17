@@ -153,7 +153,7 @@ ${pixel}
       <button class="btn" id="addBtn">Add to bag</button>
       <button class="btn btn--ghost" id="buyBtn">Buy now</button>
     </div>
-    <p class="pd__note">Free shipping across India · Dispatched in 2–3 working days · Delivered in 5–8 days · Secure online payment.<br><a href="/help.html#size-guide">Size guide</a> · <a href="/help.html#returns">Returns</a></p>
+    <p class="pd__note">Free shipping across India · Dispatched in 2–3 working days · Delivered in 5–8 days · Secure checkout by Shopify.<br><a href="/help.html#size-guide">Size guide</a> · <a href="/help.html#returns">Returns</a></p>
   </div>
 </main>
 <section class="wrap more">
@@ -169,7 +169,7 @@ ${pixel}
   <div class="rel">${related(p).map(r => `<a href="/p/${r.h}/"><img src="${esc(img(photos(r, r.colors[0])[0], 400))}" alt="${esc(r.t)} in ${esc(r.colors[0])}" loading="lazy" width="928" height="1152"><span>${esc(r.t)}</span><b>₹${r.price}</b></a>`).join("")}</div>
 </section>
 <footer class="ft dark"><div class="wrap"><div class="ft__bottom">
-  <span>© Gully Brands Clothing · Made in India · A <a href="https://gullybrands.in" rel="noopener" style="color:var(--taxi)">Gully Brands</a> label</span><a href="/#drop" style="color:var(--taxi)">See all 12 crop tops →</a>
+  <span>© Gully Brands Clothing · Ulhasnagar, Maharashtra · <a href="/help.html#about" style="color:var(--taxi)">About</a> · <a href="/help.html#terms" style="color:var(--taxi)">Terms</a> · <a href="/help.html#privacy" style="color:var(--taxi)">Privacy</a> · <a href="/help.html#returns" style="color:var(--taxi)">Returns</a></span><a href="/#drop" style="color:var(--taxi)">See all 12 crop tops →</a>
 </div></div></footer>
 <script>
 const P = ${JSON.stringify(data)};
