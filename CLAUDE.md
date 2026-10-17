@@ -85,6 +85,11 @@ product carousels posted with the per-design shoot (Mia lifestyle shot first, th
 images from shop.gullybrands.in/assets/mia/, captions in the romantic/coquette tone). The 12 carousels from
 8 Oct (old photos, DePY…/DePZ… permalinks) must be deleted by the owner in the app — the API has no media
 delete, only comment delete. Linked in footer + JSON-LD `sameAs`.
+Reels (18 Oct 2026): 4 beat-cut reels posted by the owner with in-app music (Espresso, Young and Beautiful,
+Bed Chem, Taste) — DenKUZRuWoj, DenK0jkOhHm, DenLD3yOYUQ, DenLRXlOtbn. Clips = Veo 3.1 Lite (key #4, ~10/day
+quota) + Gemini Omni (Interactions API, `input` = list of {type:image|text}) image-to-video from assets/mia;
+cut to each song's BPM in ffmpeg (session scratchpad `reels/assemble.py`). Licensed songs can't be added via
+API — always deliver silent reels and let the owner add audio in the app.
 Caption format: evocative hook line + emoji, one-sentence description, "₹499 · Sizes XS–XXL", colours,
 "Soft 180 GSM cotton. Free shipping across India.", "Shop via the link in bio ✦", ~11 hashtags
 (#itgirl #baddiestyle #lanadelreyaesthetic #coquette …). The API can't edit or delete posts; the owner
