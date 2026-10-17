@@ -4,7 +4,7 @@
    Checkout is wired to hand off to Shopify (see checkout()).
    ============================================================ */
 
-const SHOPIFY_CHECKOUT = "https://5w3pdc-k7.myshopify.com";
+const SHOPIFY_CHECKOUT = "https://checkout.gullybrands.in";
 
 /* FALLBACK (snapshot.js) is only shown if Shopify can't be reached. */
 let PRODUCTS = FALLBACK;          // replaced by live Shopify data on load

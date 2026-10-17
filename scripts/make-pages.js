@@ -173,7 +173,7 @@ ${pixel}
 </div></div></footer>
 <script>
 const P = ${JSON.stringify(data)};
-const CHECKOUT = "https://5w3pdc-k7.myshopify.com";
+const CHECKOUT = "https://checkout.gullybrands.in";
 const img = (u, w) => u.includes("cdn.shopify.com") ? u + (u.includes("?") ? "&" : "?") + "width=" + w : u;
 const q = new URLSearchParams(location.search);
 let colour = P.colors.find(c => c.toLowerCase() === (q.get("colour") || "").toLowerCase()) || P.colors[0];
