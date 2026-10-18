@@ -223,6 +223,7 @@ try { const n = JSON.parse(localStorage.getItem("gb_cart") || "[]").reduce((a, i
 track("ViewContent", { content_ids: [P.h], content_name: P.t, content_type: "product", value: P.price, currency: "INR" });
 render();
 </script>
+<script src="/music.js" defer></script>
 </body>
 </html>
 `;

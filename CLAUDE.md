@@ -124,6 +124,13 @@ Search Console: property `https://shop.gullybrands.in/` (owner gullybrands.in@gm
 verified by the meta tag, sitemap submitted Oct 2026. Homepage indexed; 12 Product rich results detected.
 Product JSON-LD (make-snapshot.js) carries delivery time + MerchantReturnNotPermitted — keep in sync with Merchant Center.
 
+## Background music
+`music.js` (loaded with `defer` before `</body>` on index, help, 404 and every product page via make-pages.js) is a
+port of the Nakoda Silver theme player, restyled cream/ink/pink. Same 13-song shuffled playlist, streamed from
+`https://nakodasilver.com/cdn/shop/files/ns-*.mp3` (CORS open) — files are NOT copied here. Never edit the Nakoda
+Silver site/theme for this; if those files are removed there, update `TRACKS` in music.js. Muted-autoplay fallback,
+unmutes on first tap/key, resumes mid-song across pages (`gb_np` storage), hides while bag/quick view is open.
+
 ## Open to-dos for the owner
 - 48 unused old hoodie/tee photos still sit in `assets/products/` (deletion not yet approved).
 - Qikink's "Beige" looks pale yellow in mockups — confirm with a physical sample before renaming.
