@@ -314,6 +314,16 @@ async function boot() {
   updateCartUI();
   observeReveals();
   if (new URLSearchParams(location.search).has("bag")) openCart();   // product pages send shoppers here after "Add to bag"
+  // Google Merchant Center checkout link: shop.gullybrands.in/?add=<variant id> puts that variant in the bag
+  const add = new URLSearchParams(location.search).get("add");
+  if (add && /^\d+$/.test(add)) {
+    let hit = null;
+    PRODUCTS.forEach(p => Object.keys(p.variants || {}).forEach(c => Object.keys(p.variants[c]).forEach(s => {
+      const v = variantOf(p, c, s); if (v && String(v.id).split("/").pop() === add) hit = [p.h, c, s];
+    })));
+    history.replaceState(null, "", location.pathname);
+    if (hit && !cart.some(i => i.key === hit.join("|"))) addToCart(...hit); else if (hit) openCart();
+  }
   console.log(live ? "[gully] live Shopify sync ✓" : "[gully] snapshot mode");
   // product links (e.g. from Google / Instagram): shop.gullybrands.in/#crop-top-11 opens that product
   const linked = byH(decodeURIComponent(location.hash.slice(1)));
