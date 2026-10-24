@@ -119,7 +119,9 @@ has About / Terms of Sale / Privacy sections on help.html linked from every foot
 to gullybrands.in. 18 Oct: **checkout.gullybrands.in** (Hostinger CNAME → shops.myshopify.com) is the
 Shopify primary domain; `SHOPIFY_CHECKOUT` in app.js and `CHECKOUT` in scripts/make-pages.js point there
 (the Storefront API in shopify.js still uses 5w3pdc-k7.myshopify.com — leave it). Merchant Center Business
-info → Checkout URL must be `https://checkout.gullybrands.in/cart/{id}:1`. Owner then requests review.
+info: Online store must be **shop.gullybrands.in** (product links live there; checkout.gullybrands.in there caused "Mismatched online
+store URL" on all 252 items, 25 Oct) and Checkout URL `https://shop.gullybrands.in/?add={id}` (app.js adds that variant to the bag
+and opens it). Owner then requests review.
 Search Console: property `https://shop.gullybrands.in/` (owner gullybrands.in@gmail.com, Composio `google_search_console_labber-dis`),
 verified by the meta tag, sitemap submitted Oct 2026. Homepage indexed; 12 Product rich results detected.
 Product JSON-LD (make-snapshot.js) carries delivery time + MerchantReturnNotPermitted — keep in sync with Merchant Center.
