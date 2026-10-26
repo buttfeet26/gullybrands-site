@@ -133,6 +133,14 @@ port of the Nakoda Silver theme player, restyled cream/ink/pink. Same 13-song sh
 Silver site/theme for this; if those files are removed there, update `TRACKS` in music.js. Muted-autoplay fallback,
 unmutes on first tap/key, resumes mid-song across pages (`gb_np` storage), hides while bag/quick view is open.
 
+## Campaign "Born to be adored" (26 Oct 2026)
+For the new IG page + Meta ads. `assets/campaign/`: 12 cinematic 9:16 start frames (`<handle>.jpg`, Gemini key #4 from the Mia
+studio shot + mockup + print crop), 12 print close-ups 4:5 (`close/`), 12 Kling V3 Pro 5 s clips (`clips/`, Wiro
+`klingai/kling-v3` mode pro, ~$0.56 each) and 8 silent reels (`reels/`: 4 scene reels + 4 "which one are you?", cuts on a
+100 BPM grid, cream end card). Scripts in `scripts/campaign/` (brief.py = scenes + motion prompts). Wiro: HMAC signature auth,
+needs a non-urllib User-Agent (Cloudflare 1010), 1 concurrent task at <$20 balance. Veo 3.1 on Wiro blocks these fashion
+shots (safety filter); ModelsLab premium video is quota-locked, its LTX-2.3 is 512px and redraws prints — use Kling.
+
 ## Open to-dos for the owner
 - 48 unused old hoodie/tee photos still sit in `assets/products/` (deletion not yet approved).
 - Qikink's "Beige" looks pale yellow in mockups — confirm with a physical sample before renaming.
