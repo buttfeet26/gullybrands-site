@@ -102,6 +102,11 @@ AddToCart, InitiateCheckout (300 ms delay before the Shopify redirect). Headless
 bot-filtered by fbevents: test with --disable-blink-features=AutomationControlled + a mobile UA.
 Purchase fires on Shopify checkout via the Shopify app (installed Oct 2026).
 Ad copy follows the brand rules above (no slang, never mention AI).
+Campaign "GB Shop | Born to be adored | Sales | Nov 2026" (52709810116634, ₹500/day CBO, live 26 Oct 2026): 8 reels + carousel
+(each card → its /p/<handle>/ page) + 2 photo ads, all UTM-tagged (utm_campaign=born_to_be_adored, utm_content per ad).
+**Facebook placements only** — the old IG account is banned; add the new IG page to the creatives + placements once it exists.
+The pixel 2541478776319465 had to be assigned to the ad account in Business Settings → Datasets → Connected assets
+(without it every publish silently stalls with "Account does not have access to pixel"). Oct 2026 campaign paused 26 Oct.
 Oct 2026 campaign "GB Shop | Crop Tops | Sales | Oct 2026" (₹100/day, 9–16 Oct, 2 carousels covering all 12 tops) ended; it used the old pixel, removed from the site 17 Oct.
 
 ## Product pages + Google feed
