@@ -104,7 +104,12 @@ Purchase fires on Shopify checkout via the Shopify app (installed Oct 2026).
 Ad copy follows the brand rules above (no slang, never mention AI).
 Campaign "GB Shop | Born to be adored | Sales | Nov 2026" (52709810116634, ₹250/day CBO from 2 Nov — was ₹500; first delivered 2 Nov after the prepaid balance was topped up, ₹4k): 8 reels + carousel
 (each card → its /p/<handle>/ page) + 2 photo ads, all UTM-tagged (utm_campaign=born_to_be_adored, utm_content per ad).
-**Facebook placements only** — the old IG account is banned; add the new IG page to the creatives + placements once it exists.
+3 Nov: merged into ONE ad set "BTBA | Top 5 | Women India | FB+IG" (Reels 1–4 + carousel; Reels 5–8 + photos ad set paused) and
+added "GB Shop | Born to be adored | Add to cart | Nov 2026" (52711606595434, ₹100/day, optimises ADD_TO_CART, same 5 ads).
+Pixel had 0 Purchase events in 28 days (776 PageView, 330 ViewContent, 14 ATC) — the Purchase campaign got 0 impressions for a day.
+**Instagram without an IG account:** creatives carry Meta's page-backed IG identity 17841447651092816 (not the banned
+@gullybrands.clothing 17841439160084305), so FB+IG placements work. IG "explore" placement is deprecated in the API — use explore_home.
+New campaigns here auto-attach catalog 978492761936117 (another Shopify store) — clear it with promoted_object {}.
 The pixel 2541478776319465 had to be assigned to the ad account in Business Settings → Datasets → Connected assets
 (without it every publish silently stalls with "Account does not have access to pixel"). Oct 2026 campaign + both Sep "GB App | Signups" campaigns archived 2 Nov. The account is **prepaid**: an empty balance shows as
 delivery substatus "account_spend_limit_reached" — ask the owner to add funds. Also running: "GB App | Leads | Shop owners | Nov 2026" (₹150/day, app.gullybrands.in).
