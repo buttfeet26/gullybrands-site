@@ -109,6 +109,7 @@ added "GB Shop | Born to be adored | Add to cart | Nov 2026" (52711606595434, �
 4 Nov: ATC "Reel 1 Old Hollywood" replaced by "→ Spider page" (lands on /p/spider-crop-top/; 26/28 clickers viewed the product vs 5/34
 from the homepage version — point ads at product pages). Budgets moved to Sales ₹150/day, Add to cart ₹200/day (ATC clicks ~₹2.5 vs ~₹12).
 Still 0 orders by 4 Nov (~87 clicks, 46 product views, 1 ATC, 2 checkouts started); checkout is prepaid-only (Cashfree) — owner looking into COD.
+**Both clothing campaigns PAUSED by the owner on request (Nov 2026) after ₹460 total spend and 0 orders** — resume with ads_update_entity status ACTIVE (live objects, no publish needed).
 Pixel had 0 Purchase events in 28 days (776 PageView, 330 ViewContent, 14 ATC) — the Purchase campaign got 0 impressions for a day.
 **Instagram without an IG account:** creatives carry Meta's page-backed IG identity 17841447651092816 (not the banned
 @gullybrands.clothing 17841439160084305), so FB+IG placements work. IG "explore" placement is deprecated in the API — use explore_home.
